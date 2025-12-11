@@ -1,0 +1,126 @@
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.producto-detalle {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.imagen-container {
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+
+    img {
+        width: 100%;
+        height: auto;
+        max-height: 400px;
+        object-fit: contain;
+        display: block;
+    }
+}
+
+.info-container {
+    padding: 20px;
+    background: white;
+
+    h1 {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0 0 16px 0;
+        color: var(--ion-text-color);
+    }
+}
+
+.precio-section {
+    margin-bottom: 16px;
+
+    .precio-original {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+
+        .tachado {
+            text-decoration: line-through;
+            color: var(--ion-color-medium);
+            font-size: 16px;
+        }
+    }
+
+    .precio-actual {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--ion-color-primary);
+    }
+}
+
+.stock-section {
+    margin-bottom: 24px;
+}
+
+.descripcion-section {
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--ion-color-light);
+    border-radius: 8px;
+
+    h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 12px 0;
+        color: var(--ion-text-color);
+    }
+
+    p {
+        margin: 0;
+        line-height: 1.6;
+        color: var(--ion-color-dark);
+    }
+}
+
+.acciones {
+    margin-top: 24px;
+    padding-bottom: 20px;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    padding: 20px;
+    text-align: center;
+
+    ion-icon {
+        font-size: 80px;
+        color: var(--ion-color-medium);
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: 20px;
+        color: var(--ion-color-medium);
+        margin-bottom: 20px;
+    }
+}
+
+.cart-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    min-width: 18px;
+    height: 18px;
+    font-size: 11px;
+    padding: 2px 4px;
+    border-radius: 9px;
+}

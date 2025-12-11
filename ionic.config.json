@@ -1,0 +1,7 @@
+{
+  "name": "supermarket_movil",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

@@ -1,0 +1,52 @@
+.checkout-container {
+    padding: 16px;
+}
+
+.totales {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--ion-color-light);
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 1rem;
+
+        &.descuento {
+            color: var(--ion-color-success);
+        }
+
+        &.total {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid var(--ion-color-light);
+            font-size: 1.2rem;
+
+            .precio-total {
+                color: var(--ion-color-primary);
+                font-size: 1.5rem;
+            }
+        }
+    }
+}
+
+ion-radio-group {
+    ion-item {
+        --padding-start: 0;
+        margin-bottom: 10px;
+    }
+}
+
+ion-footer {
+    ion-toolbar {
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --padding-top: 8px;
+        --padding-bottom: 8px;
+    }
+
+    ion-button {
+        margin: 0;
+    }
+}

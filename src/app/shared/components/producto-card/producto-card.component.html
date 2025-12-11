@@ -1,0 +1,37 @@
+<ion-card class="producto-card">
+    <div class="imagen-wrapper" (click)="onVerDetalle()">
+        <img class="producto-imagen"
+             [src]="getProductoImagen(producto) || 'assets/imgs/placeholder.png'"
+             [alt]="getProductoNombre(producto)"
+             (error)="$event.target.src='assets/imgs/placeholder.png'" />
+
+        @if (getProductoDctoPromo(producto) > 0) {
+            <ion-badge color="danger" class="badge-descuento">-{{ getProductoDctoPromo(producto) }}%</ion-badge>
+        }
+    </div>
+
+    <ion-card-header>
+        <ion-card-title class="producto-titulo">{{ getProductoNombre(producto) }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+        <div class="precio-container">
+            @if (getProductoDctoPromo(producto) > 0) { <span class="precio-original">${{ getProductoPrecioVenta(producto).toFixed(2) }}</span> }
+            <span class="precio">${{ calcularPrecioFinal(producto).toFixed(2) }}</span>
+        </div>
+
+        @if (getProductoStock(producto) > 0 && getProductoStock(producto) <= 10) { <p class="stock-bajo">¡Últimas {{
+            getProductoStock(producto) }} unidades!</p>
+            }
+
+            <ion-button class="btn-agregar" expand="block" (click)="onAgregarCarrito()"
+                [disabled]="getProductoStock(producto) <= 0 || getProductoDisponible(producto) !== 'si'" size="default">
+                @if (getProductoStock(producto) > 0 && getProductoDisponible(producto) === 'si') {
+                <ion-icon slot="start" name="cart-outline"></ion-icon>
+                Agregar
+                } @else {
+                Sin stock
+                }
+            </ion-button>
+    </ion-card-content>
+</ion-card>

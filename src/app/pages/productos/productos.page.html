@@ -1,0 +1,93 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>Productos</ion-title>
+        <ion-buttons slot="end" class="toolbar-icons">
+            <ion-button (click)="irAlCarrito()" fill="clear" style="position: relative;">
+                <ion-icon slot="icon-only" name="cart-outline" size="large"></ion-icon>
+                @if (carritoService.cantidadTotal() > 0) {
+                <ion-badge color="danger" class="cart-badge">
+                    {{ carritoService.cantidadTotal() }}
+                </ion-badge>
+                }
+            </ion-button>
+            <ion-button (click)="logout()" fill="clear">
+                <ion-icon slot="icon-only" name="log-out-outline" size="large"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+
+    <!-- Barra de búsqueda -->
+    <ion-toolbar>
+        <ion-searchbar placeholder="Buscar productos..." (ionInput)="buscarProductos($event)" [debounce]="500">
+        </ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <!-- Filtro de categorías -->
+    <ion-segment scrollable [value]="categoriaSeleccionada()?.toString() || 'all'"
+        (ionChange)="filtrarPorCategoria($event.detail.value === 'all' ? null : ($event.detail.value ? +$event.detail.value : null))">
+        <ion-segment-button value="all">
+            <ion-label>Todas</ion-label>
+        </ion-segment-button>
+        @for (categoria of categorias(); track getCategoriaId(categoria)) {
+        <ion-segment-button [value]="getCategoriaId(categoria).toString()">
+            <ion-label>{{ getCategoriaNombre(categoria) }}</ion-label>
+        </ion-segment-button>
+        }
+    </ion-segment>
+
+    <!-- Lista de productos -->
+    @if (cargando()) {
+    <div class="loading-container">
+        <ion-spinner></ion-spinner>
+    </div>
+    } @else {
+    <ion-grid>
+        <ion-row>
+            @for (producto of productos(); track getProductoId(producto)) {
+            <ion-col size="6" size-md="4" size-lg="3">
+                <ion-card>
+                    <img [src]="getProductoImagen(producto) || 'assets/imgs/placeholder.png'"
+                        [alt]="getProductoNombre(producto)" (click)="verDetalle(producto)"
+                        (error)="$event.target.src='assets/imgs/placeholder.png'" />
+
+                    <ion-card-header>
+                        <ion-card-title>{{ getProductoNombre(producto) }}</ion-card-title>
+                        <ion-card-subtitle>
+                            @if (getProductoDctoPromo(producto) > 0) {
+                            <span class="precio-original">${{ getProductoPrecioVenta(producto).toFixed(2) }}</span>
+                            <span class="descuento">-{{ getProductoDctoPromo(producto) }}%</span>
+                            }
+                        </ion-card-subtitle>
+                    </ion-card-header>
+
+                    <ion-card-content>
+                        <div class="precio-container">
+                            <span class="precio">${{ calcularPrecioFinal(producto).toFixed(2) }}</span>
+                        </div>
+
+                        <ion-button expand="block" (click)="agregarAlCarrito(producto)"
+                            [disabled]="getProductoStock(producto) <= 0 || getProductoDisponible(producto) !== 'si'">
+                            @if (getProductoStock(producto) > 0 && getProductoDisponible(producto) === 'si') {
+                            <ion-icon slot="start" name="cart-outline"></ion-icon>
+                            Agregar
+                            } @else {
+                            Sin stock
+                            }
+                        </ion-button>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            } @empty {
+            <ion-col size="12">
+                <div class="empty-state">
+                    <ion-icon name="search-outline"></ion-icon>
+                    <p>No se encontraron productos</p>
+                </div>
+            </ion-col>
+            }
+        </ion-row>
+    </ion-grid>
+    }
+</ion-content>

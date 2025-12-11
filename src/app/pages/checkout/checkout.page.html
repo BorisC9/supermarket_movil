@@ -1,0 +1,132 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/carrito"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Finalizar Compra</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="checkout-container">
+        <!-- Resumen de la compra -->
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Resumen del Pedido</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <ion-list lines="none">
+                    @for (item of carritoService.carrito().items; track getProductoId(item.producto)) {
+                    <ion-item>
+                        <ion-label>
+                            <h3>{{ getProductoNombre(item.producto) }}</h3>
+                            <p>Cantidad: {{ item.cantidad }} x ${{ calcularPrecioFinal(item.producto).toFixed(2) }}</p>
+                        </ion-label>
+                        <ion-note slot="end">${{ item.total.toFixed(2) }}</ion-note>
+                    </ion-item>
+                    }
+                </ion-list>
+
+                <div class="totales">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span>${{ carritoService.carrito().subtotal.toFixed(2) }}</span>
+                    </div>
+
+                    @if (carritoService.carrito().descuentoTotal > 0) {
+                    <div class="total-row descuento">
+                        <span>Descuentos:</span>
+                        <span>-${{ carritoService.carrito().descuentoTotal.toFixed(2) }}</span>
+                    </div>
+                    }
+
+                    <div class="total-row total">
+                        <span><strong>Total a Pagar:</strong></span>
+                        <span class="precio-total"><strong>${{ carritoService.carrito().total.toFixed(2)
+                                }}</strong></span>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Método de pago -->
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Método de Pago</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <ion-list>
+                    <ion-radio-group [value]="metodoPago()" (ionChange)="seleccionarMetodoPago($event.detail.value)">
+                        <ion-item>
+                            <ion-radio slot="start" value="efectivo"></ion-radio>
+                            <ion-label>
+                                <h2>Efectivo</h2>
+                                <p>Pago en efectivo al recibir</p>
+                            </ion-label>
+                            <ion-icon name="cash-outline" slot="end"></ion-icon>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-radio slot="start" value="tarjeta"></ion-radio>
+                            <ion-label>
+                                <h2>Tarjeta</h2>
+                                <p>Débito o crédito</p>
+                            </ion-label>
+                            <ion-icon name="card-outline" slot="end"></ion-icon>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-radio slot="start" value="transferencia"></ion-radio>
+                            <ion-label>
+                                <h2>Transferencia</h2>
+                                <p>Transferencia bancaria</p>
+                            </ion-label>
+                            <ion-icon name="swap-horizontal-outline" slot="end"></ion-icon>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Información del cliente -->
+        @if (authService.usuarioActual()) {
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Información de Entrega</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <ion-list lines="none">
+                    <ion-item>
+                        <ion-icon name="person-outline" slot="start"></ion-icon>
+                        <ion-label>{{ authService.usuarioActual()?.username || authService.usuarioActual()?.usuario_cuen
+                            }}</ion-label>
+                    </ion-item>
+                    <ion-item>
+                        <ion-icon name="briefcase-outline" slot="start"></ion-icon>
+                        <ion-label>{{ authService.usuarioActual()?.perfil || authService.usuarioActual()?.nombre_rol
+                            }}</ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+        }
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-button expand="block" (click)="confirmarCompra()"
+            [disabled]="procesando() || carritoService.carrito().items.length === 0" color="primary">
+            @if (procesando()) {
+            <ion-spinner name="crescent"></ion-spinner>
+            Procesando...
+            } @else {
+            Confirmar Compra
+            <ion-icon slot="end" name="checkmark-circle-outline"></ion-icon>
+            }
+        </ion-button>
+    </ion-toolbar>
+</ion-footer>

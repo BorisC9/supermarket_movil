@@ -1,0 +1,111 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/productos"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Carrito de Compras</ion-title>
+        @if (carrito().items.length > 0) {
+        <ion-buttons slot="end">
+            <ion-button (click)="limpiarCarrito()">
+                <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        }
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    @if (carrito().items.length === 0) {
+    <div class="empty-cart">
+        <ion-icon name="cart-outline"></ion-icon>
+        <h2>Tu carrito está vacío</h2>
+        <p>Agrega productos para comenzar tu compra</p>
+        <ion-button (click)="continuarComprando()">
+            Ver Productos
+        </ion-button>
+    </div>
+    } @else {
+    <ion-list>
+        @for (item of carrito().items; track getProductoId(item.producto)) {
+        <ion-item-sliding>
+            <ion-item>
+                <ion-thumbnail slot="start">
+                    <img [src]="getProductoImagen(item.producto) || 'assets/imgs/placeholder.png'"
+                        [alt]="getProductoNombre(item.producto)"
+                        (error)="$event.target.src='assets/imgs/placeholder.png'" />
+                </ion-thumbnail>
+
+                <ion-label>
+                    <h2>{{ getProductoNombre(item.producto) }}</h2>
+                    <p>Precio unitario: ${{ calcularPrecioFinal(item.producto).toFixed(2) }}</p>
+                    @if (item.descuento > 0) {
+                    <p class="descuento-text">Descuento: -${{ item.descuento.toFixed(2) }}</p>
+                    }
+                    <p class="precio-total">Total: ${{ item.total.toFixed(2) }}</p>
+                </ion-label>
+
+                <div slot="end" class="cantidad-control">
+                    <ion-button fill="clear" size="small"
+                        (click)="decrementarCantidad(getProductoId(item.producto), item.cantidad)">
+                        <ion-icon name="remove-circle-outline"></ion-icon>
+                    </ion-button>
+
+                    <span class="cantidad">{{ item.cantidad }}</span>
+
+                    <ion-button fill="clear" size="small"
+                        (click)="incrementarCantidad(getProductoId(item.producto), item.cantidad)"
+                        [disabled]="item.cantidad >= getProductoStock(item.producto)">
+                        <ion-icon name="add-circle-outline"></ion-icon>
+                    </ion-button>
+                </div>
+            </ion-item>
+
+            <ion-item-options side="end">
+                <ion-item-option color="danger" (click)="eliminarItem(getProductoId(item.producto))">
+                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+        }
+    </ion-list>
+
+    <!-- Resumen del carrito -->
+    <ion-card class="resumen-card">
+        <ion-card-header>
+            <ion-card-title>Resumen de Compra</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <div class="resumen-item">
+                <span>Subtotal:</span>
+                <span>${{ carrito().subtotal.toFixed(2) }}</span>
+            </div>
+
+            @if (carrito().descuentoTotal > 0) {
+            <div class="resumen-item descuento">
+                <span>Descuentos:</span>
+                <span>-${{ carrito().descuentoTotal.toFixed(2) }}</span>
+            </div>
+            }
+
+            <ion-item lines="none" class="total-item">
+                <ion-label>
+                    <h2><strong>Total:</strong></h2>
+                </ion-label>
+                <ion-note slot="end" class="total-price">
+                    <strong>${{ carrito().total.toFixed(2) }}</strong>
+                </ion-note>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+    }
+</ion-content>
+
+<ion-footer *ngIf="carrito().items.length > 0">
+    <ion-toolbar>
+        <ion-button expand="block" (click)="procederAlCheckout()" color="primary">
+            Proceder al Pago
+            <ion-icon slot="end" name="arrow-forward"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+</ion-footer>
