@@ -1,0 +1,164 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/perfil"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Editar Perfil</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="guardarCambios()" [disabled]="guardando() || perfilForm.invalid">
+                <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    @if (cargando()) {
+    <div class="loading-container">
+        <ion-spinner></ion-spinner>
+        <p>Cargando datos...</p>
+    </div>
+    } @else if (error()) {
+    <div class="empty-state">
+        <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+        <h2>{{ error() }}</h2>
+        <ion-button (click)="cargarDatosCliente()" color="primary">
+            Reintentar
+        </ion-button>
+    </div>
+    } @else {
+    <div class="form-container">
+        <form [formGroup]="perfilForm">
+            <!-- Nombres -->
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Información Personal</ion-label>
+                </ion-list-header>
+
+                <ion-item>
+                    <ion-label position="floating">Primer Nombre *</ion-label>
+                    <ion-input
+                        formControlName="primerNombreClie"
+                        type="text"
+                        placeholder="Ingrese su primer nombre"
+                        [class.ion-invalid]="perfilForm.get('primerNombreClie')?.invalid && perfilForm.get('primerNombreClie')?.touched"
+                    ></ion-input>
+                    @if (getErrorMessage('primerNombreClie')) {
+                    <ion-note slot="error">{{ getErrorMessage('primerNombreClie') }}</ion-note>
+                    }
+                </ion-item>
+
+                <ion-item>
+                    <ion-label position="floating">Segundo Nombre</ion-label>
+                    <ion-input
+                        formControlName="segundoNombreClie"
+                        type="text"
+                        placeholder="Ingrese su segundo nombre (opcional)"
+                    ></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label position="floating">Apellido Paterno *</ion-label>
+                    <ion-input
+                        formControlName="apellidoPaternoClie"
+                        type="text"
+                        placeholder="Ingrese su apellido paterno"
+                        [class.ion-invalid]="perfilForm.get('apellidoPaternoClie')?.invalid && perfilForm.get('apellidoPaternoClie')?.touched"
+                    ></ion-input>
+                    @if (getErrorMessage('apellidoPaternoClie')) {
+                    <ion-note slot="error">{{ getErrorMessage('apellidoPaternoClie') }}</ion-note>
+                    }
+                </ion-item>
+
+                <ion-item>
+                    <ion-label position="floating">Apellido Materno</ion-label>
+                    <ion-input
+                        formControlName="apellidoMaternoClie"
+                        type="text"
+                        placeholder="Ingrese su apellido materno (opcional)"
+                    ></ion-input>
+                </ion-item>
+
+                <!-- Documentación -->
+                <ion-list-header>
+                    <ion-label>Documentación</ion-label>
+                </ion-list-header>
+
+                <ion-item>
+                    <ion-label position="floating">Cédula/DNI *</ion-label>
+                    <ion-input
+                        formControlName="cedulaClie"
+                        type="text"
+                        placeholder="Ingrese su cédula"
+                        [class.ion-invalid]="perfilForm.get('cedulaClie')?.invalid && perfilForm.get('cedulaClie')?.touched"
+                    ></ion-input>
+                    @if (getErrorMessage('cedulaClie')) {
+                    <ion-note slot="error">{{ getErrorMessage('cedulaClie') }}</ion-note>
+                    }
+                </ion-item>
+
+                <ion-item>
+                    <ion-label position="floating">Fecha de Nacimiento *</ion-label>
+                    <ion-input
+                        formControlName="fechaNacimientoClie"
+                        type="date"
+                        [class.ion-invalid]="perfilForm.get('fechaNacimientoClie')?.invalid && perfilForm.get('fechaNacimientoClie')?.touched"
+                    ></ion-input>
+                    @if (getErrorMessage('fechaNacimientoClie')) {
+                    <ion-note slot="error">{{ getErrorMessage('fechaNacimientoClie') }}</ion-note>
+                    }
+                </ion-item>
+
+                <!-- Contacto -->
+                <ion-list-header>
+                    <ion-label>Contacto</ion-label>
+                </ion-list-header>
+
+                <ion-item>
+                    <ion-label position="floating">Email *</ion-label>
+                    <ion-input
+                        formControlName="emailClie"
+                        type="email"
+                        placeholder="ejemplo@correo.com"
+                        [class.ion-invalid]="perfilForm.get('emailClie')?.invalid && perfilForm.get('emailClie')?.touched"
+                    ></ion-input>
+                    @if (getErrorMessage('emailClie')) {
+                    <ion-note slot="error">{{ getErrorMessage('emailClie') }}</ion-note>
+                    }
+                </ion-item>
+
+                <ion-item>
+                    <ion-label position="floating">Teléfono *</ion-label>
+                    <ion-input
+                        formControlName="telefonoClie"
+                        type="tel"
+                        placeholder="999999999"
+                        [class.ion-invalid]="perfilForm.get('telefonoClie')?.invalid && perfilForm.get('telefonoClie')?.touched"
+                    ></ion-input>
+                    @if (getErrorMessage('telefonoClie')) {
+                    <ion-note slot="error">{{ getErrorMessage('telefonoClie') }}</ion-note>
+                    }
+                </ion-item>
+            </ion-list>
+
+            <!-- Botones -->
+            <div class="button-container">
+                <ion-button expand="block" color="primary" (click)="guardarCambios()" [disabled]="guardando() || perfilForm.invalid">
+                    @if (guardando()) {
+                    <ion-spinner name="crescent"></ion-spinner>
+                    <span style="margin-left: 0.5rem;">Guardando...</span>
+                    } @else {
+                    <ion-icon slot="start" name="save-outline"></ion-icon>
+                    Guardar Cambios
+                    }
+                </ion-button>
+
+                <ion-button expand="block" fill="outline" color="medium" (click)="cancelar()" [disabled]="guardando()">
+                    <ion-icon slot="start" name="close-outline"></ion-icon>
+                    Cancelar
+                </ion-button>
+            </div>
+        </form>
+    </div>
+    }
+</ion-content>

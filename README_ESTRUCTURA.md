@@ -33,7 +33,10 @@ supermarket_movil/src/app/
 │   ├── carrito/                   # Carrito de compras
 │   ├── checkout/                  # Finalizar compra
 │   ├── auth/                      # Login y registro
-│   └── perfil/                    # Perfil de usuario
+│   └── usuario/                   # Módulo de usuario
+│       ├── perfil/                # Perfil de usuario
+│       ├── editar-perfil/         # Editar información del perfil
+│       └── historial-compras/     # Historial de compras
 └── shared/                        # Componentes compartidos
     └── components/
         ├── producto-card/         # Card de producto

@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ProductoService, CategoriaService, CarritoService, AuthService } from '../../core/services';
 import { Producto, Categoria, calcularPrecioFinal, getProductoId, getProductoNombre, getProductoStock, getProductoDisponible, getProductoPrecioVenta, getProductoImagen, getProductoDctoPromo, getCategoriaId, getCategoriaNombre } from '../../core/models';
 
@@ -11,7 +11,7 @@ import { Producto, Categoria, calcularPrecioFinal, getProductoId, getProductoNom
     templateUrl: './productos.page.html',
     styleUrls: ['./productos.page.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, IonicModule]
+    imports: [CommonModule, FormsModule, IonicModule, RouterModule]
 })
 export class ProductosPage implements OnInit {
     productos = signal<Producto[]>([]);
@@ -50,12 +50,7 @@ export class ProductosPage implements OnInit {
         this.categoriaService.obtenerCategorias().subscribe({
             next: (categorias) => {
                 const lista = Array.isArray(categorias) ? categorias : [];
-                // Remover categorías no deseadas como "Películas y Series"
-                const filtradas = lista.filter(c => {
-                    const nombre = (this.getCategoriaNombre ? this.getCategoriaNombre(c) : getCategoriaNombre(c)).toLowerCase();
-                    return !nombre.includes('películas') && !nombre.includes('peliculas') && !nombre.includes('series');
-                });
-                this.categorias.set(filtradas);
+                this.categorias.set(lista);
             },
             error: (error) => {
                 console.error('Error al cargar categorías:', error);
@@ -71,10 +66,10 @@ export class ProductosPage implements OnInit {
         const filtros: any = {};
 
         if (this.categoriaSeleccionada()) {
-            filtros.categoria = this.categoriaSeleccionada();
+            filtros.ideCate = this.categoriaSeleccionada();
         }
         if (this.terminoBusqueda()) {
-            filtros.busqueda = this.terminoBusqueda();
+            filtros.nombreProd = this.terminoBusqueda();
         }
 
         // Si no hay filtros, enviar undefined para usar el endpoint base
@@ -90,6 +85,12 @@ export class ProductosPage implements OnInit {
                 console.error('Error al cargar productos:', error);
                 this.productos.set([]); // Asegurar que siempre sea un array
                 this.cargando.set(false);
+                
+                // Si el error es de autenticación, redirigir al login
+                if (error.status === 401 || error.status === 403) {
+                    console.warn('Sesión expirada o sin permisos, redirigiendo al login...');
+                    this.authService.logout();
+                }
             }
         });
     }
@@ -100,9 +101,28 @@ export class ProductosPage implements OnInit {
     }
 
     buscarProductos(event: any) {
-        const termino = event.target.value;
+        const termino = event.target.value?.trim() || '';
         this.terminoBusqueda.set(termino);
         this.cargarProductos();
+    }
+
+    limpiarBusqueda() {
+        this.terminoBusqueda.set('');
+        this.cargarProductos();
+    }
+
+    limpiarTodosFiltros() {
+        this.categoriaSeleccionada.set(null);
+        this.terminoBusqueda.set('');
+        this.cargarProductos();
+    }
+
+    obtenerNombreCategoria(): string {
+        const idCategoria = this.categoriaSeleccionada();
+        if (!idCategoria) return '';
+        
+        const categoria = this.categorias().find(c => this.getCategoriaId(c) === idCategoria);
+        return categoria ? this.getCategoriaNombre(categoria) : '';
     }
 
     agregarAlCarrito(producto: Producto) {
@@ -110,11 +130,15 @@ export class ProductosPage implements OnInit {
     }
 
     verDetalle(producto: Producto) {
-        this.router.navigate(['/productos', getProductoId(producto)]);
+        this.router.navigate(['/producto-detalle', getProductoId(producto)]);
     }
 
     irAlCarrito() {
         this.router.navigate(['/carrito']);
+    }
+
+    irAlPerfil() {
+        this.router.navigate(['/perfil']);
     }
 
     logout() {

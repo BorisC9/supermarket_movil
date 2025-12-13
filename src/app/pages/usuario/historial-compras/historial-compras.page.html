@@ -1,0 +1,84 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/perfil"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Historial de Compras</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    @if (cargando()) {
+    <div class="loading-container">
+        <ion-spinner></ion-spinner>
+        <p>Cargando historial...</p>
+    </div>
+    } @else if (error()) {
+    <div class="empty-state">
+        <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+        <h2>{{ error() }}</h2>
+        <ion-button (click)="cargarHistorial()" color="primary">
+            Reintentar
+        </ion-button>
+    </div>
+    } @else if (compras().length === 0) {
+    <div class="empty-state">
+        <ion-icon name="receipt-outline"></ion-icon>
+        <h2>No hay compras</h2>
+        <p>Aún no has realizado ninguna compra</p>
+        <ion-button routerLink="/productos" color="primary">
+            Ir a Productos
+        </ion-button>
+    </div>
+    } @else {
+    <div class="compras-container">
+        <div class="compras-header">
+            <p>{{ compras().length }} compra{{ compras().length !== 1 ? 's' : '' }} realizadas</p>
+        </div>
+
+        @for (compra of compras(); track compra.ideVent) {
+        <ion-card button (click)="verDetalleCompra(compra)">
+            <ion-card-header>
+                <div class="compra-header">
+                    <div class="compra-info">
+                        <ion-card-title>Pedido #{{ compra.numFacturaVent }}</ion-card-title>
+                        <ion-card-subtitle>{{ formatearFecha(compra.fechaVent) }}</ion-card-subtitle>
+                    </div>
+                    <ion-badge [color]="getEstadoColor(compra.estadoVent)">
+                        {{ getEstadoTexto(compra.estadoVent) }}
+                    </ion-badge>
+                </div>
+            </ion-card-header>
+
+            <ion-card-content>
+                <div class="compra-detalles">
+                    <div class="detalle-row">
+                        <span class="label">Subtotal:</span>
+                        <span class="value">S/ {{ compra.subTotalVent.toFixed(2) }}</span>
+                    </div>
+                    @if (compra.dctoVent && compra.dctoVent > 0) {
+                    <div class="detalle-row">
+                        <span class="label">Descuento:</span>
+                        <span class="value discount">-S/ {{ compra.dctoVent.toFixed(2) }}</span>
+                    </div>
+                    }
+                    <div class="detalle-row total">
+                        <span class="label">Total:</span>
+                        <span class="value">S/ {{ compra.totalVent.toFixed(2) }}</span>
+                    </div>
+                </div>
+
+                <div class="ver-detalle">
+                    <ion-icon name="chevron-forward-outline"></ion-icon>
+                    <span>Ver detalle</span>
+                </div>
+            </ion-card-content>
+        </ion-card>
+        }
+    </div>
+    }
+</ion-content>

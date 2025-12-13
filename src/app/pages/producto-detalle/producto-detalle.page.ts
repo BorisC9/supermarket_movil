@@ -1,7 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductoService } from '../../core/services/producto.service';
 import { CarritoService } from '../../core/services/carrito.service';
 import {
@@ -21,11 +22,12 @@ import {
   templateUrl: './producto-detalle.page.html',
   styleUrls: ['./producto-detalle.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, FormsModule, IonicModule, RouterModule]
 })
 export class ProductoDetallePage implements OnInit {
   producto = signal<Producto | null>(null);
   cargando = signal(true);
+  cantidad = signal(1);
 
   constructor(
     private route: ActivatedRoute,
@@ -39,10 +41,12 @@ export class ProductoDetallePage implements OnInit {
     if (id) {
       this.productoService.obtenerProductoPorId(id).subscribe({
         next: (p) => {
+          console.log('Producto detalle:', p);
           this.producto.set(p);
           this.cargando.set(false);
         },
-        error: () => {
+        error: (error) => {
+          console.error('Error al cargar producto:', error);
           this.producto.set(null);
           this.cargando.set(false);
         }
@@ -79,14 +83,71 @@ export class ProductoDetallePage implements OnInit {
     return getProductoImagen(producto);
   }
 
+  getCodigoBarras(producto: any): string {
+    return producto?.codigo_barra_prod || producto?.codigoBarraProd || 'N/A';
+  }
+
+  getCategoria(producto: any): string {
+    return producto?.nombre_cate || producto?.categoria?.nombreCate || 'Sin categoría';
+  }
+
+  getMarca(producto: any): string {
+    return producto?.nombre_marc || producto?.marca?.nombreMarc || 'Sin marca';
+  }
+
+  getDescripcion(producto: any): string {
+    return producto?.descripcion_prod || producto?.descripcionProd || 'Sin descripción disponible';
+  }
+
+  incrementarCantidad(): void {
+    const prod = this.producto();
+    if (prod && this.cantidad() < this.getStock(prod)) {
+      this.cantidad.update(c => c + 1);
+    }
+  }
+
+  decrementarCantidad(): void {
+    if (this.cantidad() > 1) {
+      this.cantidad.update(c => c - 1);
+    }
+  }
+
   agregarAlCarrito(): void {
     const prod = this.producto();
     if (prod && this.getDisponible(prod)) {
-      this.carritoService.agregarProducto(prod);
+      this.carritoService.agregarProducto(prod, this.cantidad());
+      // Resetear cantidad después de agregar
+      this.cantidad.set(1);
+      // Mostrar feedback al usuario (opcional)
+      console.log(`${this.cantidad()} producto(s) agregado(s) al carrito`);
     }
   }
 
   irAlCarrito() {
     this.router.navigate(['/carrito']);
+  }
+
+  getStockStatus(producto: Producto): { color: string, texto: string, icon: string } {
+    const stock = this.getStock(producto);
+    const disponible = this.getDisponible(producto);
+
+    if (!disponible) {
+      return { color: 'danger', texto: 'Agotado', icon: 'close-circle' };
+    }
+    if (stock <= 5) {
+      return { color: 'warning', texto: `Últimas ${stock} unidades`, icon: 'alert-circle' };
+    }
+    return { color: 'success', texto: `${stock} unidades disponibles`, icon: 'checkmark-circle' };
+  }
+
+  calcularAhorro(producto: Producto): string {
+    const precioOriginal = parseFloat(this.getPrecio(producto));
+    const precioConDescuento = parseFloat(this.getPrecioConDescuento(producto));
+    return (precioOriginal - precioConDescuento).toFixed(2);
+  }
+
+  calcularSubtotal(producto: Producto): string {
+    const precioConDescuento = parseFloat(this.getPrecioConDescuento(producto));
+    return (precioConDescuento * this.cantidad()).toFixed(2);
   }
 }

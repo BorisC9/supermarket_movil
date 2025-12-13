@@ -10,13 +10,14 @@ export interface LoginResponse {
 }
 
 export interface Usuario {
-    id?: number;          // Del backend
+    id?: number;          // Del backend (payload.sub)
     ide_cuen?: number;
     username?: string;    // Del backend
     usuario_cuen?: string;
     state?: string;       // Del backend
     ide_empl?: number;
-    perfil?: string;      // Del backend (nombre_perf)
+    ide_clie?: number;    // ID del cliente - para usuarios móviles
+    perfil?: string;      // Del backend (nombre_perf) - REQUERIDO para RolesGuard
     ide_perf?: number;
     nombre_perf?: string;
     ide_rol?: number;

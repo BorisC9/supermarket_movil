@@ -3,24 +3,49 @@
         <ion-title>Productos</ion-title>
         <ion-buttons slot="end" class="toolbar-icons">
             <ion-button (click)="irAlCarrito()" fill="clear" style="position: relative;">
-                <ion-icon slot="icon-only" name="cart-outline" size="large"></ion-icon>
+                <ion-icon slot="icon-only" name="cart-outline" size="large" color="light"></ion-icon>
                 @if (carritoService.cantidadTotal() > 0) {
                 <ion-badge color="danger" class="cart-badge">
                     {{ carritoService.cantidadTotal() }}
                 </ion-badge>
                 }
             </ion-button>
-            <ion-button (click)="logout()" fill="clear">
-                <ion-icon slot="icon-only" name="log-out-outline" size="large"></ion-icon>
+            <ion-button (click)="irAlPerfil()" fill="clear" style="position: relative;">
+                <ion-icon slot="icon-only" name="person-outline" size="large" color="light" style="color: var(--ion-color-light) !important;"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
 
     <!-- Barra de búsqueda -->
     <ion-toolbar>
-        <ion-searchbar placeholder="Buscar productos..." (ionInput)="buscarProductos($event)" [debounce]="500">
+        <ion-searchbar placeholder="Buscar por nombre de producto..." (ionInput)="buscarProductos($event)"
+            [debounce]="500">
         </ion-searchbar>
     </ion-toolbar>
+
+    <!-- Chips de filtros activos -->
+    @if (categoriaSeleccionada() || terminoBusqueda()) {
+    <ion-toolbar>
+        <div class="chips-container">
+            @if (categoriaSeleccionada()) {
+            <ion-chip (click)="filtrarPorCategoria(null)">
+                <ion-label>{{ obtenerNombreCategoria() }}</ion-label>
+                <ion-icon name="close-circle"></ion-icon>
+            </ion-chip>
+            }
+            @if (terminoBusqueda()) {
+            <ion-chip (click)="limpiarBusqueda()">
+                <ion-label>Búsqueda: "{{ terminoBusqueda() }}"</ion-label>
+                <ion-icon name="close-circle"></ion-icon>
+            </ion-chip>
+            }
+            <ion-chip color="danger" (click)="limpiarTodosFiltros()">
+                <ion-icon name="trash-outline"></ion-icon>
+                <ion-label>Limpiar todo</ion-label>
+            </ion-chip>
+        </div>
+    </ion-toolbar>
+    }
 </ion-header>
 
 <ion-content>
