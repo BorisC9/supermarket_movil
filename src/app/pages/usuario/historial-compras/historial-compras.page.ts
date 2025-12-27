@@ -86,6 +86,15 @@ export class HistorialComprasPage implements OnInit {
         return estados[estado?.toLowerCase()] || estado;
     }
 
+    /**
+     * Formatea un valor numérico a 2 decimales
+     * Maneja el caso cuando el valor viene como string desde la API
+     */
+    formatearPrecio(valor: any): string {
+        const numero = Number(valor) || 0;
+        return numero.toFixed(2);
+    }
+
     doRefresh(event: any) {
         this.cargarHistorial();
         setTimeout(() => {

@@ -1,0 +1,56 @@
+<ion-content class="login-content">
+    <div class="login-container">
+        <!-- Header visual -->
+        <div class="login-header">
+            <div class="logo-circle">
+                <ion-icon name="storefront"></ion-icon>
+            </div>
+            <h1 class="app-title">SuperMarket</h1>
+            <p class="app-subtitle">Tu supermercado en línea</p>
+        </div>
+
+        <!-- Formulario -->
+        <div class="login-form-card">
+            <h2 class="form-title">Iniciar Sesión</h2>
+
+            <div class="input-group">
+                <div class="input-icon">
+                    <ion-icon name="person-outline"></ion-icon>
+                </div>
+                <ion-input type="text" placeholder="Usuario" [(ngModel)]="usuario" class="custom-input">
+                </ion-input>
+            </div>
+
+            <div class="input-group">
+                <div class="input-icon">
+                    <ion-icon name="lock-closed-outline"></ion-icon>
+                </div>
+                <ion-input type="password" placeholder="Contraseña" [(ngModel)]="clave" class="custom-input">
+                </ion-input>
+            </div>
+
+            <ion-button class="login-btn" expand="block" (click)="login()"
+                [disabled]="procesando() || !usuario() || !clave()">
+                @if (procesando()) {
+                <ion-spinner name="crescent"></ion-spinner>
+                <span style="margin-left: 8px;">Iniciando...</span>
+                } @else {
+                Iniciar Sesión
+                <ion-icon slot="end" name="arrow-forward"></ion-icon>
+                }
+            </ion-button>
+
+            <div class="forgot-link">
+                <a>¿Olvidaste tu contraseña?</a>
+            </div>
+        </div>
+
+        <!-- Registro -->
+        <div class="register-section">
+            <p>¿No tienes una cuenta?</p>
+            <ion-button class="register-btn" expand="block" fill="clear" (click)="irARegistro()">
+                Crear Cuenta
+            </ion-button>
+        </div>
+    </div>
+</ion-content>

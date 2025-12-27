@@ -1,0 +1,180 @@
+ion-header.ion-no-border {
+    ion-toolbar {
+        --background: var(--ion-background-color);
+    }
+}
+
+.header-title {
+    display: flex;
+    flex-direction: column;
+
+    .title-main {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--ion-text-color);
+    }
+
+    .title-sub {
+        font-size: 0.75rem;
+        color: var(--ion-color-medium);
+        font-weight: 400;
+    }
+}
+
+.icon-btn {
+    --color: var(--ion-text-color);
+}
+
+.home-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+// Hero Section
+.hero-section {
+    text-align: center;
+    padding: 40px 20px;
+    margin-bottom: 32px;
+}
+
+.hero-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
+
+    ion-icon {
+        font-size: 50px;
+        color: white;
+    }
+}
+
+.hero-section h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
+    margin: 0 0 8px 0;
+}
+
+.hero-section p {
+    font-size: 1rem;
+    color: var(--ion-color-medium);
+    margin: 0;
+}
+
+// Quick Actions
+.quick-actions {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.action-card {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.action-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--ion-color-primary-tint), var(--ion-color-secondary-tint));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+        font-size: 28px;
+        color: var(--ion-color-primary);
+    }
+}
+
+.action-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
+    margin: 0 0 4px 0;
+}
+
+.action-card p {
+    font-size: 0.85rem;
+    color: var(--ion-color-medium);
+    margin: 0;
+}
+
+.action-card .arrow {
+    position: absolute;
+    right: 20px;
+    font-size: 20px;
+    color: var(--ion-color-medium);
+}
+
+// Features Section
+.features-section {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.features-section h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
+    margin: 0 0 20px 0;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--ion-color-light);
+
+    &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    &:first-child {
+        padding-top: 0;
+    }
+
+    >ion-icon {
+        font-size: 32px;
+        color: var(--ion-color-primary);
+        flex-shrink: 0;
+    }
+
+    h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--ion-text-color);
+        margin: 0 0 4px 0;
+    }
+
+    p {
+        font-size: 0.85rem;
+        color: var(--ion-color-medium);
+        margin: 0;
+    }
+}

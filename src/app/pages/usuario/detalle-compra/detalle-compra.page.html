@@ -50,15 +50,15 @@
                             </div>
                             <div class="producto-precios">
                                 <p class="precio-unitario">
-                                    S/ {{ detalle.precioUnitarioProd?.toFixed(2) }} c/u
+                                    S/ {{ formatearPrecio(detalle.precioUnitarioProd) }} c/u
                                 </p>
                                 @if (detalle.dctoPromoProd && detalle.dctoPromoProd > 0) {
                                 <p class="descuento">
-                                    Desc: -S/ {{ detalle.dctoPromoProd?.toFixed(2) }}
+                                    Desc: -S/ {{ formatearPrecio(detalle.dctoPromoProd) }}
                                 </p>
                                 }
                                 <p class="subtotal">
-                                    <strong>S/ {{ detalle.totalProd?.toFixed(2) }}</strong>
+                                    <strong>S/ {{ formatearPrecio(detalle.totalProd) }}</strong>
                                 </p>
                             </div>
                         </div>
@@ -87,23 +87,23 @@
                     </div>
                     <div class="detalle-row">
                         <span class="label">Subtotal:</span>
-                        <span class="value">S/ {{ compra()?.subTotalVent?.toFixed(2) }}</span>
+                        <span class="value">S/ {{ formatearPrecio(compra()?.subTotalVent) }}</span>
                     </div>
                     @if (compra()?.dctoSocioVent && compra()?.dctoSocioVent > 0) {
                     <div class="detalle-row descuento-row">
                         <span class="label">Descuento Socio:</span>
-                        <span class="value discount">-S/ {{ compra()?.dctoSocioVent?.toFixed(2) }}</span>
+                        <span class="value discount">-S/ {{ formatearPrecio(compra()?.dctoSocioVent) }}</span>
                     </div>
                     }
                     @if (compra()?.dctoEdadVent && compra()?.dctoEdadVent > 0) {
                     <div class="detalle-row descuento-row">
                         <span class="label">Descuento Tercera Edad:</span>
-                        <span class="value discount">-S/ {{ compra()?.dctoEdadVent?.toFixed(2) }}</span>
+                        <span class="value discount">-S/ {{ formatearPrecio(compra()?.dctoEdadVent) }}</span>
                     </div>
                     }
                     <div class="detalle-row total-row">
                         <span class="label"><strong>Total:</strong></span>
-                        <span class="value total"><strong>S/ {{ compra()?.totalVent?.toFixed(2) }}</strong></span>
+                        <span class="value total"><strong>S/ {{ formatearPrecio(compra()?.totalVent) }}</strong></span>
                     </div>
                 </div>
             </ion-card-content>

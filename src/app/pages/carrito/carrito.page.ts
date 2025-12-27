@@ -55,4 +55,11 @@ export class CarritoPage {
     limpiarCarrito() {
         this.carritoService.limpiarCarrito();
     }
+
+    onImageError(event: Event) {
+        const target = event.target as HTMLImageElement;
+        if (target) {
+            target.src = 'assets/imgs/placeholder.png';
+        }
+    }
 }

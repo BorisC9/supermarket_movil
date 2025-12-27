@@ -1,16 +1,16 @@
-<ion-header>
+<ion-header class="ion-no-border">
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/productos"></ion-back-button>
+            <ion-back-button defaultHref="/productos" text="" class="back-btn"></ion-back-button>
         </ion-buttons>
-        <ion-title>Detalle del Producto</ion-title>
+        <ion-title>
+            <span class="header-title-text">Detalle</span>
+        </ion-title>
         <ion-buttons slot="end">
-            <ion-button (click)="irAlCarrito()" fill="clear" style="position: relative;">
-                <ion-icon slot="icon-only" name="cart-outline" size="large"></ion-icon>
+            <ion-button (click)="irAlCarrito()" class="cart-btn">
+                <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
                 @if (carritoService.cantidadTotal() > 0) {
-                <ion-badge color="danger" class="cart-badge">
-                    {{ carritoService.cantidadTotal() }}
-                </ion-badge>
+                <span class="cart-badge">{{ carritoService.cantidadTotal() }}</span>
                 }
             </ion-button>
         </ion-buttons>
@@ -20,161 +20,112 @@
 <ion-content>
     @if (cargando()) {
     <div class="loading-container">
-        <ion-spinner></ion-spinner>
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
         <p>Cargando producto...</p>
     </div>
     } @else if (producto()) {
     <div class="producto-detalle">
         <!-- Imagen principal -->
         <div class="imagen-container">
-            <img [src]="getImageUrl(producto()!)" [alt]="getNombre(producto()!)"
-                (error)="$event.target.src = 'assets/imgs/placeholder.png'" />
+            <img [src]="getImageUrl(producto()!)" [alt]="getNombre(producto()!)" (error)="onImageError($event)" />
             @if (getDescuento(producto()!) > 0) {
-            <div class="descuento-badge">
-                <ion-badge color="danger">
-                    -{{ getDescuento(producto()!) }}% OFF
-                </ion-badge>
-            </div>
+            <span class="discount-badge">-{{ getDescuento(producto()!) }}%</span>
             }
         </div>
 
         <!-- Información del producto -->
         <div class="info-container">
-            <!-- Título y Categoría/Marca -->
-            <div class="header-info">
-                <h1>{{ getNombre(producto()!) }}</h1>
-                <div class="meta-info">
-                    <ion-chip color="primary">
-                        <ion-icon name="pricetag-outline"></ion-icon>
-                        <ion-label>{{ getCategoria(producto()!) }}</ion-label>
-                    </ion-chip>
-                    <ion-chip color="secondary">
-                        <ion-icon name="business-outline"></ion-icon>
-                        <ion-label>{{ getMarca(producto()!) }}</ion-label>
-                    </ion-chip>
+            <!-- Categoría y Marca -->
+            <div class="tags-row">
+                <span class="tag primary">{{ getCategoria(producto()!) }}</span>
+                <span class="tag secondary">{{ getMarca(producto()!) }}</span>
+            </div>
+
+            <!-- Título -->
+            <h1 class="product-title">{{ getNombre(producto()!) }}</h1>
+
+            <!-- Precios -->
+            <div class="price-section">
+                @if (getDescuento(producto()!) > 0) {
+                <div class="price-with-discount">
+                    <span class="original-price">S/ {{ getPrecio(producto()!) }}</span>
+                    <span class="current-price">S/ {{ getPrecioConDescuento(producto()!) }}</span>
+                    <span class="savings">Ahorras S/ {{ calcularAhorro(producto()!) }}</span>
+                </div>
+                } @else {
+                <span class="current-price">S/ {{ getPrecio(producto()!) }}</span>
+                }
+            </div>
+
+            <!-- Estado del stock -->
+            <div class="stock-badge" [class]="getStockStatus(producto()!).color">
+                <ion-icon [name]="getStockStatus(producto()!).icon"></ion-icon>
+                <span>{{ getStockStatus(producto()!).texto }}</span>
+            </div>
+
+            <!-- Información del producto -->
+            <div class="info-card">
+                <h3 class="info-card-title">Información del Producto</h3>
+
+                <div class="info-row">
+                    <div class="info-icon">
+                        <ion-icon name="barcode-outline"></ion-icon>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Código de Barras</span>
+                        <span class="info-value">{{ getCodigoBarras(producto()!) }}</span>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-icon">
+                        <ion-icon name="cube-outline"></ion-icon>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Stock Disponible</span>
+                        <span class="info-value">{{ getStock(producto()!) }} unidades</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Sección de precios -->
-            <ion-card class="precio-card">
-                <ion-card-content>
-                    @if (getDescuento(producto()!) > 0) {
-                    <div class="precio-con-descuento">
-                        <div class="precio-anterior">
-                            <span class="label">Precio regular:</span>
-                            <span class="valor tachado">S/ {{ getPrecio(producto()!) }}</span>
-                        </div>
-                        <div class="precio-final">
-                            <span class="label">Precio con descuento:</span>
-                            <span class="valor destacado">S/ {{ getPrecioConDescuento(producto()!) }}</span>
-                        </div>
-                        <div class="ahorro">
-                            Ahorras: S/ {{ calcularAhorro(producto()!) }}
-                        </div>
-                    </div>
-                    } @else {
-                    <div class="precio-normal">
-                        <span class="label">Precio:</span>
-                        <span class="valor">S/ {{ getPrecio(producto()!) }}</span>
-                    </div>
-                    }
-                </ion-card-content>
-            </ion-card>
-
-            <!-- Estado del stock -->
-            <div class="stock-section">
-                <ion-chip [color]="getStockStatus(producto()!).color">
-                    <ion-icon [name]="getStockStatus(producto()!).icon"></ion-icon>
-                    <ion-label>{{ getStockStatus(producto()!).texto }}</ion-label>
-                </ion-chip>
+            <!-- Descripción -->
+            <div class="info-card">
+                <h3 class="info-card-title">Descripción</h3>
+                <p class="description-text">{{ getDescripcion(producto()!) }}</p>
             </div>
-
-            <!-- Detalles adicionales -->
-            <ion-card class="detalles-card">
-                <ion-card-header>
-                    <ion-card-title>Información del Producto</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                    <ion-list lines="full">
-                        <ion-item>
-                            <ion-icon name="barcode-outline" slot="start" color="medium"></ion-icon>
-                            <ion-label>
-                                <h3>Código de Barras</h3>
-                                <p>{{ getCodigoBarras(producto()!) }}</p>
-                            </ion-label>
-                        </ion-item>
-                        <ion-item>
-                            <ion-icon name="layers-outline" slot="start" color="medium"></ion-icon>
-                            <ion-label>
-                                <h3>Categoría</h3>
-                                <p>{{ getCategoria(producto()!) }}</p>
-                            </ion-label>
-                        </ion-item>
-                        <ion-item>
-                            <ion-icon name="business-outline" slot="start" color="medium"></ion-icon>
-                            <ion-label>
-                                <h3>Marca</h3>
-                                <p>{{ getMarca(producto()!) }}</p>
-                            </ion-label>
-                        </ion-item>
-                        <ion-item>
-                            <ion-icon name="cube-outline" slot="start" color="medium"></ion-icon>
-                            <ion-label>
-                                <h3>Stock Disponible</h3>
-                                <p>{{ getStock(producto()!) }} unidades</p>
-                            </ion-label>
-                        </ion-item>
-                    </ion-list>
-                </ion-card-content>
-            </ion-card>
-
-            <!-- Descripción del producto -->
-            <ion-card class="descripcion-card">
-                <ion-card-header>
-                    <ion-card-title>Descripción</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                    <p>{{ getDescripcion(producto()!) }}</p>
-                </ion-card-content>
-            </ion-card>
 
             <!-- Selector de cantidad -->
             @if (getDisponible(producto()!)) {
-            <div class="cantidad-section">
-                <ion-card class="cantidad-card">
-                    <ion-card-content>
-                        <div class="cantidad-container">
-                            <span class="cantidad-label">Cantidad:</span>
-                            <div class="cantidad-selector">
-                                <ion-button fill="outline" size="small" (click)="decrementarCantidad()"
-                                    [disabled]="cantidad() <= 1">
-                                    <ion-icon slot="icon-only" name="remove"></ion-icon>
-                                </ion-button>
-                                <span class="cantidad-valor">{{ cantidad() }}</span>
-                                <ion-button fill="outline" size="small" (click)="incrementarCantidad()"
-                                    [disabled]="cantidad() >= getStock(producto()!)">
-                                    <ion-icon slot="icon-only" name="add"></ion-icon>
-                                </ion-button>
-                            </div>
-                        </div>
-                        <div class="subtotal">
-                            <span>Subtotal:</span>
-                            <span class="subtotal-valor">S/ {{ calcularSubtotal(producto()!) }}</span>
-                        </div>
-                    </ion-card-content>
-                </ion-card>
+            <div class="quantity-card">
+                <div class="quantity-row">
+                    <span class="quantity-label">Cantidad</span>
+                    <div class="quantity-control">
+                        <button class="qty-btn" (click)="decrementarCantidad()" [disabled]="cantidad() <= 1">
+                            <ion-icon name="remove"></ion-icon>
+                        </button>
+                        <span class="quantity-value">{{ cantidad() }}</span>
+                        <button class="qty-btn" (click)="incrementarCantidad()"
+                            [disabled]="cantidad() >= getStock(producto()!)">
+                            <ion-icon name="add"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="subtotal-row">
+                    <span>Subtotal</span>
+                    <span class="subtotal-value">S/ {{ calcularSubtotal(producto()!) }}</span>
+                </div>
             </div>
             }
 
             <!-- Botones de acción -->
-            <div class="acciones">
-                <ion-button expand="block" size="large" color="primary" [disabled]="!getDisponible(producto()!)"
+            <div class="action-buttons">
+                <ion-button class="add-cart-btn" expand="block" [disabled]="!getDisponible(producto()!)"
                     (click)="agregarAlCarrito()">
-                    <ion-icon slot="start" name="cart-outline"></ion-icon>
+                    <ion-icon slot="start" name="cart"></ion-icon>
                     Agregar al Carrito
                 </ion-button>
-                <ion-button expand="block" fill="outline" size="large" routerLink="/productos">
-                    <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+                <ion-button class="continue-btn" expand="block" fill="clear" routerLink="/productos">
+                    <ion-icon slot="start" name="arrow-back"></ion-icon>
                     Seguir Comprando
                 </ion-button>
             </div>
@@ -182,10 +133,12 @@
     </div>
     } @else {
     <div class="empty-state">
-        <ion-icon name="alert-circle-outline"></ion-icon>
+        <div class="empty-icon-container">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+        </div>
         <h2>Producto no encontrado</h2>
         <p>El producto que buscas no existe o no está disponible</p>
-        <ion-button routerLink="/productos" color="primary">
+        <ion-button class="primary-btn" routerLink="/productos">
             <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
             Volver a productos
         </ion-button>

@@ -25,13 +25,442 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* ========================================
+   DISEÑO MODERNO - ESTILO PREMIUM
+   ======================================== */
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+// Variables de diseño
+:root {
+    --card-border-radius: 20px;
+    --button-border-radius: 14px;
+    --item-border-radius: 16px;
+    --gradient-primary: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
+    --gradient-accent: linear-gradient(135deg, #06B6D4 0%, #14B8A6 100%);
+    --shadow-card: 0 4px 20px rgba(13, 148, 136, 0.1);
+    --shadow-button: 0 4px 15px rgba(13, 148, 136, 0.3);
+}
+
+// Estilos globales del body
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+// Toolbar moderno
+ion-toolbar {
+    --background: transparent;
+    --border-width: 0;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+
+    &.toolbar-primary {
+        --background: var(--gradient-primary);
+    }
+}
+
+ion-header {
+    &::after {
+        display: none; // Quitar la línea inferior
+    }
+}
+
+// Contenido con padding
+ion-content {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 8px;
+    --padding-bottom: 16px;
+    --background: #ffffff;
+}
+
+// Tarjetas modernas con bordes muy redondeados
+ion-card {
+    --background: #ffffff;
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-card);
+    margin: 12px 0;
+    overflow: hidden;
+    border: 1px solid rgba(13, 148, 136, 0.08);
+
+    ion-card-header {
+        padding: 16px 20px 8px;
+    }
+
+    ion-card-content {
+        padding: 8px 20px 20px;
+    }
+
+    ion-card-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--ion-text-color);
+    }
+
+    ion-card-subtitle {
+        font-size: 13px;
+        color: var(--ion-color-medium);
+        margin-top: 4px;
+    }
+}
+
+// Tarjeta de producto premium
+.product-card {
+    border-radius: var(--card-border-radius);
+    background: #ffffff;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    .product-image-container {
+        position: relative;
+        background: linear-gradient(180deg, #F0FDFA 0%, #ffffff 100%);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 140px;
+
+        img {
+            max-height: 120px;
+            object-fit: contain;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--gradient-accent);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            --background: rgba(255, 255, 255, 0.9);
+            --border-radius: 50%;
+            width: 36px;
+            height: 36px;
+        }
+    }
+
+    .product-info {
+        padding: 16px;
+
+        .product-category {
+            font-size: 11px;
+            color: var(--ion-color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .product-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--ion-text-color);
+            margin: 0 0 8px 0;
+            line-height: 1.3;
+        }
+
+        .product-price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .product-price {
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--ion-color-primary);
+            }
+
+            .add-to-cart-btn {
+                --background: var(--gradient-primary);
+                --border-radius: 12px;
+                --padding-start: 12px;
+                --padding-end: 12px;
+                --box-shadow: var(--shadow-button);
+                height: 40px;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+// Botones modernos
+ion-button {
+    --border-radius: var(--button-border-radius);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: none;
+
+    &.button-solid {
+        --box-shadow: var(--shadow-button);
+    }
+
+    &.btn-gradient {
+        --background: var(--gradient-primary);
+    }
+
+    &.btn-large {
+        height: 56px;
+        font-size: 16px;
+        --border-radius: 16px;
+    }
+}
+
+// Items de lista modernos
+ion-item {
+    --border-radius: var(--item-border-radius);
+    --background: #ffffff;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --inner-padding-end: 0;
+    margin-bottom: 8px;
+
+    &.item-card {
+        --background: #ffffff;
+        border-radius: var(--item-border-radius);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+}
+
+// Chips/badges de categoría
+.category-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background: var(--ion-color-light);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ion-color-primary);
+    margin: 4px;
+    transition: all 0.2s ease;
+
+    &.active {
+        background: var(--gradient-primary);
+        color: white;
+        box-shadow: var(--shadow-button);
+    }
+
+    ion-icon {
+        margin-right: 6px;
+        font-size: 16px;
+    }
+}
+
+// Iconos de categoría circulares
+.category-icon-container {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--ion-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+
+    ion-icon {
+        font-size: 24px;
+        color: var(--ion-color-primary);
+    }
+
+    &.active {
+        background: var(--gradient-primary);
+
+        ion-icon {
+            color: white;
+        }
+    }
+}
+
+// Barra de búsqueda moderna
+ion-searchbar {
+    --background: var(--ion-color-light);
+    --border-radius: 16px;
+    --box-shadow: none;
+    --placeholder-color: var(--ion-color-medium);
+    --icon-color: var(--ion-color-primary);
+    padding: 8px 0;
+
+    .searchbar-input-container {
+        border-radius: 16px;
+    }
+}
+
+// Segmentos/tabs modernos
+ion-segment {
+    --background: var(--ion-color-light);
+    border-radius: 14px;
+    padding: 4px;
+
+    ion-segment-button {
+        --border-radius: 10px;
+        --indicator-color: var(--ion-color-primary);
+        --color: var(--ion-color-medium);
+        --color-checked: white;
+        font-weight: 500;
+        min-height: 40px;
+
+        &::part(indicator-background) {
+            background: var(--gradient-primary);
+        }
+    }
+}
+
+// Input modernos
+ion-input,
+ion-textarea {
+    --background: var(--ion-color-light);
+    --border-radius: 14px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+}
+
+// Thumbnails redondeados
+ion-thumbnail {
+    --border-radius: 14px;
+    --size: 80px;
+}
+
+// Badge de cantidad en carrito
+.cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--ion-color-danger);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+}
+
+// Tab bar moderna
+ion-tab-bar {
+    --background: #ffffff;
+    --border: none;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 20px 20px 0 0;
+    padding: 8px 0;
+}
+
+ion-tab-button {
+    --color: var(--ion-color-medium);
+    --color-selected: var(--ion-color-primary);
+
+    &::part(native) {
+        padding-top: 8px;
+    }
+}
+
+// Skeleton loaders
+ion-skeleton-text {
+    --border-radius: 8px;
+}
+
+// Animación de entrada
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-in {
+    animation: fadeInUp 0.3s ease-out forwards;
+}
+
+// Grid de productos
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 8px 0;
+}
+
+// Carrito vacío
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+
+    ion-icon {
+        font-size: 80px;
+        color: var(--ion-color-light-shade);
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--ion-text-color);
+        margin: 0 0 8px 0;
+    }
+
+    p {
+        font-size: 14px;
+        color: var(--ion-color-medium);
+        margin: 0 0 24px 0;
+    }
+}
+
+// Precio tachado (descuento)
+.price-original {
+    text-decoration: line-through;
+    color: var(--ion-color-medium);
+    font-size: 13px;
+    margin-right: 8px;
+}
+
+// Footer de checkout
+.checkout-footer {
+    background: #ffffff;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 24px 24px 0 0;
+    padding: 20px;
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .total-label {
+            font-size: 14px;
+            color: var(--ion-color-medium);
+        }
+
+        .total-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--ion-text-color);
+        }
+    }
+}

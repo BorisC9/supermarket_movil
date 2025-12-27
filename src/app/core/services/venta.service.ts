@@ -34,10 +34,22 @@ export class VentaService {
 
     /**
      * Obtener detalle de una venta
+     * El backend devuelve { venta: {...}, detalles: [...] }
+     * Lo fusionamos para que sea más fácil de usar en la vista
      */
     obtenerDetalleVenta(idVenta: number): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/${idVenta}`).pipe(
-            map(response => response?.data || response)
+            map(response => {
+                const data = response?.data || response;
+                // Fusionar venta con detalles en un solo objeto
+                if (data?.venta && data?.detalles) {
+                    return {
+                        ...data.venta,
+                        detalles: data.detalles
+                    };
+                }
+                return data;
+            })
         );
     }
 }

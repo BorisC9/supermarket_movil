@@ -1,3 +1,21 @@
+// Header
+ion-header.ion-no-border {
+    ion-toolbar {
+        --background: var(--ion-background-color);
+    }
+}
+
+.header-title-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
+}
+
+.back-btn {
+    --color: var(--ion-text-color);
+}
+
+// Loading
 .loading-container {
     display: flex;
     justify-content: center;
@@ -5,65 +23,158 @@
     height: 100%;
 }
 
+// Container
 .perfil-container {
     max-width: 600px;
     margin: 0 auto;
+    padding: 16px;
 }
 
-.perfil-header {
-    text-align: center;
-    padding: 2rem 1rem;
-    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
-    color: white;
+// Profile header
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px;
+    margin-bottom: 16px;
+}
 
-    .avatar {
+.avatar-container {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(var(--ion-color-primary-rgb), 0.3);
+
+    ion-icon {
+        font-size: 50px;
+        color: white;
+    }
+}
+
+.avatar-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    ion-icon {
+        font-size: 16px;
+        color: var(--ion-color-primary);
+    }
+}
+
+.profile-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
+    margin: 0 0 4px 0;
+}
+
+.profile-role {
+    font-size: 0.85rem;
+    color: var(--ion-color-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+// Options sections
+.options-section {
+    margin-bottom: 24px;
+}
+
+.section-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ion-color-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 4px;
+    margin: 0 0 12px 0;
+}
+
+.option-card {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: translateX(4px);
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.option-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 14px;
+
+    ion-icon {
+        font-size: 22px;
+        color: var(--ion-color-primary);
+    }
+
+    &.danger {
+        background: rgba(var(--ion-color-danger-rgb), 0.1);
+
         ion-icon {
-            font-size: 100px;
-            color: white;
+            color: var(--ion-color-danger);
+        }
+    }
+}
+
+.option-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .option-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--ion-text-color);
+
+        &.danger {
+            color: var(--ion-color-danger);
         }
     }
 
-    h2 {
-        margin: 1rem 0 0.5rem;
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
-
-    .perfil-tipo {
-        margin: 0;
-        opacity: 0.9;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-}
-
-ion-list {
-    padding: 0;
-}
-
-ion-list-header {
-    font-weight: 600;
-    padding: 1rem 1rem 0.5rem;
-}
-
-ion-item {
-    --padding-start: 16px;
-    --inner-padding-end: 16px;
-
-    ion-icon[slot="start"] {
-        margin-right: 16px;
-        font-size: 24px;
-    }
-
-    h3 {
-        font-weight: 500;
-        margin-bottom: 4px;
-    }
-
-    p {
-        font-size: 0.875rem;
+    .option-desc {
+        font-size: 0.8rem;
         color: var(--ion-color-medium);
-        margin: 0;
+        margin-top: 2px;
     }
+}
+
+.option-arrow {
+    font-size: 18px;
+    color: var(--ion-color-medium);
 }

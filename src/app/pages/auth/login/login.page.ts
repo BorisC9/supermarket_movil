@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services';
-import { LoginRequest } from '../../core/models';
+import { AuthService } from '../../../core/services';
+import { LoginRequest } from '../../../core/models';
 
 @Component({
     selector: 'app-login',
@@ -72,4 +72,3 @@ export class LoginPage {
         this.router.navigate(['/auth/register']);
     }
 }
-

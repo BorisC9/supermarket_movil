@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services';
-import { RegisterRequest } from '../../core/models';
+import { AuthService } from '../../../core/services';
+import { RegisterRequest } from '../../../core/models';
 
 @Component({
     selector: 'app-register',

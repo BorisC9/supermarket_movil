@@ -1,12 +1,10 @@
 <ion-card class="producto-card">
     <div class="imagen-wrapper" (click)="onVerDetalle()">
-        <img class="producto-imagen"
-             [src]="getProductoImagen(producto) || 'assets/imgs/placeholder.png'"
-             [alt]="getProductoNombre(producto)"
-             (error)="$event.target.src='assets/imgs/placeholder.png'" />
+        <img class="producto-imagen" [src]="getProductoImagen(producto) || 'assets/imgs/placeholder.png'"
+            [alt]="getProductoNombre(producto)" (error)="onImageError($event)" />
 
         @if (getProductoDctoPromo(producto) > 0) {
-            <ion-badge color="danger" class="badge-descuento">-{{ getProductoDctoPromo(producto) }}%</ion-badge>
+        <ion-badge color="danger" class="badge-descuento">-{{ getProductoDctoPromo(producto) }}%</ion-badge>
         }
     </div>
 
@@ -16,7 +14,8 @@
 
     <ion-card-content>
         <div class="precio-container">
-            @if (getProductoDctoPromo(producto) > 0) { <span class="precio-original">${{ getProductoPrecioVenta(producto).toFixed(2) }}</span> }
+            @if (getProductoDctoPromo(producto) > 0) { <span class="precio-original">${{
+                getProductoPrecioVenta(producto).toFixed(2) }}</span> }
             <span class="precio">${{ calcularPrecioFinal(producto).toFixed(2) }}</span>
         </div>
 

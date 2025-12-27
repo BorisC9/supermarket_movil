@@ -1,0 +1,87 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-title>
+            <div class="header-title">
+                <span class="title-main">SuperMarket</span>
+                <span class="title-sub">Bienvenido</span>
+            </div>
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="irACarrito()" class="icon-btn">
+                <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+            </ion-button>
+            <ion-button (click)="irAPerfil()" class="icon-btn">
+                <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="home-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-icon">
+                <ion-icon name="storefront"></ion-icon>
+            </div>
+            <h1>Bienvenido a SuperMarket</h1>
+            <p>Tu supermercado en línea</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="action-card" (click)="irAProductos()">
+                <div class="action-icon">
+                    <ion-icon name="grid-outline"></ion-icon>
+                </div>
+                <h3>Productos</h3>
+                <p>Ver catálogo completo</p>
+                <ion-icon name="chevron-forward" class="arrow"></ion-icon>
+            </div>
+
+            <div class="action-card" (click)="irACarrito()">
+                <div class="action-icon">
+                    <ion-icon name="cart-outline"></ion-icon>
+                </div>
+                <h3>Mi Carrito</h3>
+                <p>Ver mis compras</p>
+                <ion-icon name="chevron-forward" class="arrow"></ion-icon>
+            </div>
+
+            <div class="action-card" (click)="irAPerfil()">
+                <div class="action-icon">
+                    <ion-icon name="person-outline"></ion-icon>
+                </div>
+                <h3>Mi Perfil</h3>
+                <p>Configuración y ajustes</p>
+                <ion-icon name="chevron-forward" class="arrow"></ion-icon>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features-section">
+            <h2>¿Por qué elegirnos?</h2>
+            <div class="feature-item">
+                <ion-icon name="flash-outline"></ion-icon>
+                <div>
+                    <h4>Entrega Rápida</h4>
+                    <p>Recibe tus productos en tiempo récord</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <ion-icon name="shield-checkmark-outline"></ion-icon>
+                <div>
+                    <h4>Compra Segura</h4>
+                    <p>Tus datos están protegidos</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <ion-icon name="pricetag-outline"></ion-icon>
+                <div>
+                    <h4>Mejores Precios</h4>
+                    <p>Descuentos exclusivos para ti</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

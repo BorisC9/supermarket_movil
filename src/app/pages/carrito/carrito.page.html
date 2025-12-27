@@ -1,12 +1,17 @@
-<ion-header>
-    <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+    <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/productos"></ion-back-button>
+            <ion-back-button defaultHref="/productos" text="" class="back-btn"></ion-back-button>
         </ion-buttons>
-        <ion-title>Carrito de Compras</ion-title>
+        <ion-title>
+            <div class="header-title">
+                <span class="title-main">Mi Carrito</span>
+                <span class="title-sub">{{ carrito().items.length }} productos</span>
+            </div>
+        </ion-title>
         @if (carrito().items.length > 0) {
         <ion-buttons slot="end">
-            <ion-button (click)="limpiarCarrito()">
+            <ion-button (click)="limpiarCarrito()" class="clear-btn">
                 <ion-icon name="trash-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -16,96 +21,91 @@
 
 <ion-content>
     @if (carrito().items.length === 0) {
-    <div class="empty-cart">
-        <ion-icon name="cart-outline"></ion-icon>
+    <div class="empty-state">
+        <div class="empty-icon-container">
+            <ion-icon name="cart-outline"></ion-icon>
+        </div>
         <h2>Tu carrito está vacío</h2>
         <p>Agrega productos para comenzar tu compra</p>
-        <ion-button (click)="continuarComprando()">
+        <ion-button class="primary-btn" (click)="continuarComprando()">
+            <ion-icon slot="start" name="storefront-outline"></ion-icon>
             Ver Productos
         </ion-button>
     </div>
     } @else {
-    <ion-list>
+    <div class="cart-items">
         @for (item of carrito().items; track getProductoId(item.producto)) {
-        <ion-item-sliding>
-            <ion-item>
-                <ion-thumbnail slot="start">
-                    <img [src]="getProductoImagen(item.producto) || 'assets/imgs/placeholder.png'"
-                        [alt]="getProductoNombre(item.producto)"
-                        (error)="$event.target.src='assets/imgs/placeholder.png'" />
-                </ion-thumbnail>
+        <div class="cart-item animate-in">
+            <div class="item-image">
+                <img [src]="getProductoImagen(item.producto) || 'assets/imgs/placeholder.png'"
+                    [alt]="getProductoNombre(item.producto)" (error)="onImageError($event)" />
+            </div>
 
-                <ion-label>
-                    <h2>{{ getProductoNombre(item.producto) }}</h2>
-                    <p>Precio unitario: ${{ calcularPrecioFinal(item.producto).toFixed(2) }}</p>
-                    @if (item.descuento > 0) {
-                    <p class="descuento-text">Descuento: -${{ item.descuento.toFixed(2) }}</p>
-                    }
-                    <p class="precio-total">Total: ${{ item.total.toFixed(2) }}</p>
-                </ion-label>
+            <div class="item-details">
+                <h4 class="item-name">{{ getProductoNombre(item.producto) }}</h4>
+                <p class="item-price-unit">${{ calcularPrecioFinal(item.producto).toFixed(2) }} c/u</p>
 
-                <div slot="end" class="cantidad-control">
-                    <ion-button fill="clear" size="small"
-                        (click)="decrementarCantidad(getProductoId(item.producto), item.cantidad)">
-                        <ion-icon name="remove-circle-outline"></ion-icon>
-                    </ion-button>
-
-                    <span class="cantidad">{{ item.cantidad }}</span>
-
-                    <ion-button fill="clear" size="small"
-                        (click)="incrementarCantidad(getProductoId(item.producto), item.cantidad)"
-                        [disabled]="item.cantidad >= getProductoStock(item.producto)">
-                        <ion-icon name="add-circle-outline"></ion-icon>
-                    </ion-button>
+                <div class="item-bottom">
+                    <div class="quantity-control">
+                        <button class="qty-btn"
+                            (click)="decrementarCantidad(getProductoId(item.producto), item.cantidad)">
+                            <ion-icon name="remove"></ion-icon>
+                        </button>
+                        <span class="quantity">{{ item.cantidad }}</span>
+                        <button class="qty-btn"
+                            (click)="incrementarCantidad(getProductoId(item.producto), item.cantidad)"
+                            [disabled]="item.cantidad >= getProductoStock(item.producto)">
+                            <ion-icon name="add"></ion-icon>
+                        </button>
+                    </div>
+                    <span class="item-total">${{ item.total.toFixed(2) }}</span>
                 </div>
-            </ion-item>
+            </div>
 
-            <ion-item-options side="end">
-                <ion-item-option color="danger" (click)="eliminarItem(getProductoId(item.producto))">
-                    <ion-icon slot="icon-only" name="trash"></ion-icon>
-                </ion-item-option>
-            </ion-item-options>
-        </ion-item-sliding>
+            <button class="delete-btn" (click)="eliminarItem(getProductoId(item.producto))">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </div>
         }
-    </ion-list>
+    </div>
 
     <!-- Resumen del carrito -->
-    <ion-card class="resumen-card">
-        <ion-card-header>
-            <ion-card-title>Resumen de Compra</ion-card-title>
-        </ion-card-header>
+    <div class="summary-card">
+        <h3 class="summary-title">Resumen de Compra</h3>
 
-        <ion-card-content>
-            <div class="resumen-item">
-                <span>Subtotal:</span>
-                <span>${{ carrito().subtotal.toFixed(2) }}</span>
-            </div>
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <span>${{ carrito().subtotal.toFixed(2) }}</span>
+        </div>
 
-            @if (carrito().descuentoTotal > 0) {
-            <div class="resumen-item descuento">
-                <span>Descuentos:</span>
-                <span>-${{ carrito().descuentoTotal.toFixed(2) }}</span>
-            </div>
-            }
+        @if (carrito().descuentoTotal > 0) {
+        <div class="summary-row discount">
+            <span>Descuentos</span>
+            <span>-${{ carrito().descuentoTotal.toFixed(2) }}</span>
+        </div>
+        }
 
-            <ion-item lines="none" class="total-item">
-                <ion-label>
-                    <h2><strong>Total:</strong></h2>
-                </ion-label>
-                <ion-note slot="end" class="total-price">
-                    <strong>${{ carrito().total.toFixed(2) }}</strong>
-                </ion-note>
-            </ion-item>
-        </ion-card-content>
-    </ion-card>
+        <div class="summary-divider"></div>
+
+        <div class="summary-row total">
+            <span>Total</span>
+            <span>${{ carrito().total.toFixed(2) }}</span>
+        </div>
+    </div>
     }
 </ion-content>
 
-<ion-footer *ngIf="carrito().items.length > 0">
-    <ion-toolbar>
-        <ion-button expand="block" (click)="procederAlCheckout()" color="primary">
-            Proceder al Pago
+@if (carrito().items.length > 0) {
+<ion-footer class="ion-no-border">
+    <div class="footer-content">
+        <div class="footer-total">
+            <span class="footer-label">Total a pagar</span>
+            <span class="footer-price">${{ carrito().total.toFixed(2) }}</span>
+        </div>
+        <ion-button class="checkout-btn" expand="block" (click)="procederAlCheckout()">
+            Continuar
             <ion-icon slot="end" name="arrow-forward"></ion-icon>
         </ion-button>
-    </ion-toolbar>
+    </div>
 </ion-footer>
+}

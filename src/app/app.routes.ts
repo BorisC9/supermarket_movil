@@ -12,11 +12,11 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadComponent: () => import('./pages/auth/login.page').then(m => m.LoginPage)
+        loadComponent: () => import('./pages/auth/login/login.page').then(m => m.LoginPage)
       },
       {
         path: 'register',
-        loadComponent: () => import('./pages/auth/register.page').then(m => m.RegisterPage)
+        loadComponent: () => import('./pages/auth/register/register.page').then(m => m.RegisterPage)
       },
       {
         path: '',
@@ -63,13 +63,45 @@ export const routes: Routes = [
       {
         path: 'detalle-compra/:id',
         loadComponent: () => import('./pages/usuario/detalle-compra/detalle-compra.page').then(m => m.DetalleCompraPage)
+      },
+      {
+        path: 'cambiar-password',
+        loadComponent: () => import('./pages/usuario/cambiar-password/cambiar-password.page').then(m => m.CambiarPasswordPage)
+      }
+    ],
+    canActivate: [authGuard]
+  },
+  // Alias /usuario para compatibilidad
+  {
+    path: 'usuario',
+    children: [
+      {
+        path: 'perfil',
+        loadComponent: () => import('./pages/usuario/perfil/perfil.page').then(m => m.PerfilPage)
+      },
+      {
+        path: 'editar-perfil',
+        loadComponent: () => import('./pages/usuario/editar-perfil/editar-perfil.page').then(m => m.EditarPerfilPage)
+      },
+      {
+        path: 'historial-compras',
+        loadComponent: () => import('./pages/usuario/historial-compras/historial-compras.page').then(m => m.HistorialComprasPage)
+      },
+      {
+        path: 'detalle-compra/:id',
+        loadComponent: () => import('./pages/usuario/detalle-compra/detalle-compra.page').then(m => m.DetalleCompraPage)
+      },
+      {
+        path: 'cambiar-password',
+        loadComponent: () => import('./pages/usuario/cambiar-password/cambiar-password.page').then(m => m.CambiarPasswordPage)
       }
     ],
     canActivate: [authGuard]
   },
   {
     path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage),
+    canActivate: [authGuard]
   },
   {
     path: '**',

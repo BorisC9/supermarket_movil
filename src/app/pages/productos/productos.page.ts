@@ -134,7 +134,7 @@ export class ProductosPage implements OnInit {
     obtenerNombreCategoria(): string {
         const idCategoria = this.categoriaSeleccionada();
         if (!idCategoria) return '';
-        
+
         const categoria = this.categorias().find(c => this.getCategoriaId(c) === idCategoria);
         return categoria ? this.getCategoriaNombre(categoria) : '';
     }
@@ -153,6 +153,27 @@ export class ProductosPage implements OnInit {
 
     irAlPerfil() {
         this.router.navigate(['/perfil']);
+    }
+
+    onImageError(event: Event) {
+        const img = event.target as HTMLImageElement;
+        if (img) {
+            img.src = 'assets/imgs/placeholder.png';
+        }
+    }
+
+    getProductoCategoria(producto: Producto): string {
+        // Si el producto tiene el nombre de la categoría
+        if ((producto as any).nom_cate) {
+            return (producto as any).nom_cate;
+        }
+        // Buscar en las categorías cargadas
+        const ideCate = (producto as any).ide_cate || (producto as any).ideCate;
+        if (ideCate) {
+            const categoria = this.categorias().find(c => this.getCategoriaId(c) === ideCate);
+            return categoria ? this.getCategoriaNombre(categoria) : '';
+        }
+        return '';
     }
 
     logout() {

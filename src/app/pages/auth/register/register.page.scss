@@ -1,4 +1,4 @@
-.register-container {
+﻿.register-container {
     max-width: 600px;
     margin: 0 auto;
     padding: 2rem 0;
@@ -86,7 +86,7 @@
         --color: #1f2937;
         --placeholder-color: #9ca3af;
         --placeholder-opacity: 1;
-        
+
         // Labels flotantes
         label {
             color: #4b5563 !important;
@@ -103,7 +103,7 @@
 
     &.ion-invalid {
         --border-color: var(--ion-color-danger);
-        
+
         ion-input label {
             color: var(--ion-color-danger) !important;
         }

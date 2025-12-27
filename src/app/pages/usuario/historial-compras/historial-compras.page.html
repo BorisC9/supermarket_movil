@@ -1,9 +1,11 @@
-<ion-header>
+<ion-header class="ion-no-border">
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/perfil"></ion-back-button>
+            <ion-back-button defaultHref="/perfil" text="" class="back-btn"></ion-back-button>
         </ion-buttons>
-        <ion-title>Historial de Compras</ion-title>
+        <ion-title>
+            <span class="header-title-text">Mis Compras</span>
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -14,76 +16,78 @@
 
     @if (cargando()) {
     <div class="loading-container">
-        <ion-spinner></ion-spinner>
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
         <p>Cargando historial...</p>
     </div>
     } @else if (error()) {
     <div class="empty-state">
-        <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+        <div class="empty-icon-container danger">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+        </div>
         <h2>{{ error() }}</h2>
-        <ion-button (click)="cargarHistorial()" color="primary">
+        <ion-button class="primary-btn" (click)="cargarHistorial()">
             Reintentar
         </ion-button>
     </div>
     } @else if (compras().length === 0) {
     <div class="empty-state">
-        <ion-icon name="receipt-outline"></ion-icon>
+        <div class="empty-icon-container">
+            <ion-icon name="receipt-outline"></ion-icon>
+        </div>
         <h2>No hay compras</h2>
         <p>Aún no has realizado ninguna compra</p>
-        <ion-button routerLink="/productos" color="primary">
+        <ion-button class="primary-btn" routerLink="/productos">
+            <ion-icon slot="start" name="storefront-outline"></ion-icon>
             Ir a Productos
         </ion-button>
     </div>
     } @else {
     <div class="compras-container">
         <div class="compras-header">
-            <p>{{ compras().length }} compra{{ compras().length !== 1 ? 's' : '' }} realizadas</p>
+            <span class="compras-count">{{ compras().length }} compra{{ compras().length !== 1 ? 's' : '' }}</span>
         </div>
 
         @for (compra of compras(); track compra.ideVent) {
-        <ion-card button (click)="verDetalleCompra(compra)">
-            <ion-card-header>
-                <div class="compra-header">
-                    <div class="compra-info">
-                        <ion-card-title>Pedido #{{ compra.numFacturaVent }}</ion-card-title>
-                        <ion-card-subtitle>{{ formatearFecha(compra.fechaVent) }}</ion-card-subtitle>
-                    </div>
-                    <ion-badge [color]="getEstadoColor(compra.estadoVent)">
-                        {{ getEstadoTexto(compra.estadoVent) }}
-                    </ion-badge>
+        <div class="purchase-card animate-in" (click)="verDetalleCompra(compra)">
+            <div class="purchase-header">
+                <div class="purchase-info">
+                    <span class="purchase-number">Pedido #{{ compra.numFacturaVent }}</span>
+                    <span class="purchase-date">{{ formatearFecha(compra.fechaVent) }}</span>
                 </div>
-            </ion-card-header>
+                <span class="status-badge" [class]="getEstadoColor(compra.estadoVent)">
+                    {{ getEstadoTexto(compra.estadoVent) }}
+                </span>
+            </div>
 
-            <ion-card-content>
-                <div class="compra-detalles">
-                    <div class="detalle-row">
-                        <span class="label">Subtotal:</span>
-                        <span class="value">S/ {{ compra.subTotalVent.toFixed(2) }}</span>
-                    </div>
-                    @if (compra.dctoSocioVent && compra.dctoSocioVent > 0) {
-                    <div class="detalle-row">
-                        <span class="label">Desc. Socio:</span>
-                        <span class="value discount">-S/ {{ compra.dctoSocioVent.toFixed(2) }}</span>
-                    </div>
-                    }
-                    @if (compra.dctoEdadVent && compra.dctoEdadVent > 0) {
-                    <div class="detalle-row">
-                        <span class="label">Desc. Tercera Edad:</span>
-                        <span class="value discount">-S/ {{ compra.dctoEdadVent.toFixed(2) }}</span>
-                    </div>
-                    }
-                    <div class="detalle-row total">
-                        <span class="label">Total:</span>
-                        <span class="value">S/ {{ compra.totalVent.toFixed(2) }}</span>
-                    </div>
+            <div class="purchase-details">
+                <div class="detail-row">
+                    <span>Subtotal</span>
+                    <span>S/ {{ formatearPrecio(compra.subTotalVent) }}</span>
                 </div>
+                @if (compra.dctoSocioVent && compra.dctoSocioVent > 0) {
+                <div class="detail-row discount">
+                    <span>Desc. Socio</span>
+                    <span>-S/ {{ formatearPrecio(compra.dctoSocioVent) }}</span>
+                </div>
+                }
+                @if (compra.dctoEdadVent && compra.dctoEdadVent > 0) {
+                <div class="detail-row discount">
+                    <span>Desc. Tercera Edad</span>
+                    <span>-S/ {{ formatearPrecio(compra.dctoEdadVent) }}</span>
+                </div>
+                }
+                <div class="detail-divider"></div>
+                <div class="detail-row total">
+                    <span>Total</span>
+                    <span>S/ {{ formatearPrecio(compra.totalVent) }}</span>
+                </div>
+            </div>
 
-                <div class="ver-detalle">
-                    <ion-icon name="chevron-forward-outline"></ion-icon>
-                    <span>Ver detalle</span>
-                </div>
-            </ion-card-content>
-        </ion-card>
+            <div class="purchase-footer">
+                <span>Ver detalle</span>
+                <ion-icon name="chevron-forward"></ion-icon>
+            </div>
+        </div>
         }
     </div>
     }

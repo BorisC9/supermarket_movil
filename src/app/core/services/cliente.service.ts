@@ -5,6 +5,11 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Cliente } from '../models';
 
+export interface CambiarPasswordDTO {
+    passwordActual: string;
+    passwordNuevo: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -44,5 +49,12 @@ export class ClienteService {
      */
     actualizarCliente(idCliente: number, cliente: Partial<Cliente>): Observable<Cliente> {
         return this.actualizarPerfil(cliente);
+    }
+
+    /**
+     * Cambiar contraseña del cliente autenticado
+     */
+    cambiarPassword(data: CambiarPasswordDTO): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/cambiar-password`, data);
     }
 }

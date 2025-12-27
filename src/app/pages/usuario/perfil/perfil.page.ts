@@ -40,9 +40,9 @@ export class PerfilPage implements OnInit {
         this.router.navigate(['/perfil/historial-compras']);
     }
 
-    irACambiarPassword() {
-        // Por implementar
-        // Por implementar
+    async irACambiarPassword() {
+        // Navegar a la página de cambiar contraseña
+        this.router.navigate(['/usuario/cambiar-password']);
     }
 
     cerrarSesion() {

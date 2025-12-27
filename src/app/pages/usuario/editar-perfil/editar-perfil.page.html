@@ -37,12 +37,8 @@
 
                 <ion-item>
                     <ion-label position="floating">Primer Nombre *</ion-label>
-                    <ion-input
-                        formControlName="primerNombreClie"
-                        type="text"
-                        placeholder="Ingrese su primer nombre"
-                        [class.ion-invalid]="perfilForm.get('primerNombreClie')?.invalid && perfilForm.get('primerNombreClie')?.touched"
-                    ></ion-input>
+                    <ion-input formControlName="primerNombreClie" type="text" placeholder="Ingrese su primer nombre"
+                        [class.ion-invalid]="perfilForm.get('primerNombreClie')?.invalid && perfilForm.get('primerNombreClie')?.touched"></ion-input>
                     @if (getErrorMessage('primerNombreClie')) {
                     <ion-note slot="error">{{ getErrorMessage('primerNombreClie') }}</ion-note>
                     }
@@ -50,21 +46,15 @@
 
                 <ion-item>
                     <ion-label position="floating">Segundo Nombre</ion-label>
-                    <ion-input
-                        formControlName="segundoNombreClie"
-                        type="text"
-                        placeholder="Ingrese su segundo nombre (opcional)"
-                    ></ion-input>
+                    <ion-input formControlName="segundoNombreClie" type="text"
+                        placeholder="Ingrese su segundo nombre (opcional)"></ion-input>
                 </ion-item>
 
                 <ion-item>
                     <ion-label position="floating">Apellido Paterno *</ion-label>
-                    <ion-input
-                        formControlName="apellidoPaternoClie"
-                        type="text"
+                    <ion-input formControlName="apellidoPaternoClie" type="text"
                         placeholder="Ingrese su apellido paterno"
-                        [class.ion-invalid]="perfilForm.get('apellidoPaternoClie')?.invalid && perfilForm.get('apellidoPaternoClie')?.touched"
-                    ></ion-input>
+                        [class.ion-invalid]="perfilForm.get('apellidoPaternoClie')?.invalid && perfilForm.get('apellidoPaternoClie')?.touched"></ion-input>
                     @if (getErrorMessage('apellidoPaternoClie')) {
                     <ion-note slot="error">{{ getErrorMessage('apellidoPaternoClie') }}</ion-note>
                     }
@@ -72,11 +62,8 @@
 
                 <ion-item>
                     <ion-label position="floating">Apellido Materno</ion-label>
-                    <ion-input
-                        formControlName="apellidoMaternoClie"
-                        type="text"
-                        placeholder="Ingrese su apellido materno (opcional)"
-                    ></ion-input>
+                    <ion-input formControlName="apellidoMaternoClie" type="text"
+                        placeholder="Ingrese su apellido materno (opcional)"></ion-input>
                 </ion-item>
 
                 <!-- Documentación -->
@@ -86,12 +73,8 @@
 
                 <ion-item>
                     <ion-label position="floating">Cédula/DNI *</ion-label>
-                    <ion-input
-                        formControlName="cedulaClie"
-                        type="text"
-                        placeholder="Ingrese su cédula"
-                        [class.ion-invalid]="perfilForm.get('cedulaClie')?.invalid && perfilForm.get('cedulaClie')?.touched"
-                    ></ion-input>
+                    <ion-input formControlName="cedulaClie" type="text" placeholder="Ingrese su cédula"
+                        [class.ion-invalid]="perfilForm.get('cedulaClie')?.invalid && perfilForm.get('cedulaClie')?.touched"></ion-input>
                     @if (getErrorMessage('cedulaClie')) {
                     <ion-note slot="error">{{ getErrorMessage('cedulaClie') }}</ion-note>
                     }
@@ -99,11 +82,8 @@
 
                 <ion-item>
                     <ion-label position="floating">Fecha de Nacimiento *</ion-label>
-                    <ion-input
-                        formControlName="fechaNacimientoClie"
-                        type="date"
-                        [class.ion-invalid]="perfilForm.get('fechaNacimientoClie')?.invalid && perfilForm.get('fechaNacimientoClie')?.touched"
-                    ></ion-input>
+                    <ion-input formControlName="fechaNacimientoClie" type="date"
+                        [class.ion-invalid]="perfilForm.get('fechaNacimientoClie')?.invalid && perfilForm.get('fechaNacimientoClie')?.touched"></ion-input>
                     @if (getErrorMessage('fechaNacimientoClie')) {
                     <ion-note slot="error">{{ getErrorMessage('fechaNacimientoClie') }}</ion-note>
                     }
@@ -116,12 +96,8 @@
 
                 <ion-item>
                     <ion-label position="floating">Email *</ion-label>
-                    <ion-input
-                        formControlName="emailClie"
-                        type="email"
-                        placeholder="ejemplo@correo.com"
-                        [class.ion-invalid]="perfilForm.get('emailClie')?.invalid && perfilForm.get('emailClie')?.touched"
-                    ></ion-input>
+                    <ion-input formControlName="emailClie" type="email" placeholder="ejemplo@correo.com"
+                        [class.ion-invalid]="perfilForm.get('emailClie')?.invalid && perfilForm.get('emailClie')?.touched"></ion-input>
                     @if (getErrorMessage('emailClie')) {
                     <ion-note slot="error">{{ getErrorMessage('emailClie') }}</ion-note>
                     }
@@ -129,12 +105,8 @@
 
                 <ion-item>
                     <ion-label position="floating">Teléfono *</ion-label>
-                    <ion-input
-                        formControlName="telefonoClie"
-                        type="tel"
-                        placeholder="999999999"
-                        [class.ion-invalid]="perfilForm.get('telefonoClie')?.invalid && perfilForm.get('telefonoClie')?.touched"
-                    ></ion-input>
+                    <ion-input formControlName="telefonoClie" type="tel" placeholder="999999999"
+                        [class.ion-invalid]="perfilForm.get('telefonoClie')?.invalid && perfilForm.get('telefonoClie')?.touched"></ion-input>
                     @if (getErrorMessage('telefonoClie')) {
                     <ion-note slot="error">{{ getErrorMessage('telefonoClie') }}</ion-note>
                     }
@@ -143,7 +115,8 @@
 
             <!-- Botones -->
             <div class="button-container">
-                <ion-button expand="block" color="primary" (click)="guardarCambios()" [disabled]="guardando() || perfilForm.invalid">
+                <ion-button expand="block" color="primary" (click)="guardarCambios()"
+                    [disabled]="guardando() || perfilForm.invalid">
                     @if (guardando()) {
                     <ion-spinner name="crescent"></ion-spinner>
                     <span style="margin-left: 0.5rem;">Guardando...</span>

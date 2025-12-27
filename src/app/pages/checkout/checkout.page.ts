@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CarritoService, VentaService, AuthService } from '../../core/services';
-import { CrearVentaDTO, DetalleVentaDTO, CabeceraVentaDTO, calcularPrecioFinal, getProductoId, getProductoNombre } from '../../core/models';
+import { CrearVentaDTO, CabeceraVentaDTO, DetalleVentaDTO, calcularPrecioFinal, getProductoId, getProductoNombre } from '../../core/models';
 
 @Component({
     selector: 'app-checkout',
@@ -24,7 +24,9 @@ export class CheckoutPage {
         public carritoService: CarritoService,
         private ventaService: VentaService,
         public authService: AuthService,
-        private router: Router
+        private router: Router,
+        private toastController: ToastController,
+        private alertController: AlertController
     ) { }
 
     seleccionarMetodoPago(metodo: string) {
@@ -34,25 +36,21 @@ export class CheckoutPage {
     async confirmarCompra() {
         if (this.procesando()) return;
 
+        const usuario = this.authService.usuarioActual();
+        if (!usuario?.ide_clie) {
+            await this.mostrarError('Debes iniciar sesión para realizar una compra');
+            this.router.navigate(['/auth/login']);
+            return;
+        }
+
         this.procesando.set(true);
 
         try {
             const carritoActual = this.carritoService.carrito();
-            const usuario = this.authService.usuarioActual();
-
-            // Calcular totales
-            const subTotal = carritoActual.subtotal;
-            const descuentoPromoTotal = carritoActual.items.reduce((total, item) => {
-                const precioOriginal = (item.producto as any)['precioVentaProd'] || 0;
-                const descuento = (item.producto as any)['dctoPromoProd'] || 0;
-                const descuentoItem = (precioOriginal * descuento / 100) * item.cantidad;
-                return total + descuentoItem;
-            }, 0);
-            const total = carritoActual.total;
             const cantidadTotal = carritoActual.items.reduce((sum, item) => sum + item.cantidad, 0);
 
             // Preparar los detalles de la venta
-            const detalles: any[] = carritoActual.items.map(item => {
+            const detalles: DetalleVentaDTO[] = carritoActual.items.map(item => {
                 const precioUnitario = calcularPrecioFinal(item.producto);
                 const dctoPromoPercent = (item.producto as any)['dctoPromoProd'] ?? 0;
                 const subtotal = precioUnitario * item.cantidad;
@@ -60,83 +58,80 @@ export class CheckoutPage {
                 const totalProd = subtotal - descuentoPromoMonto;
 
                 return {
-                    ideDetaVent: -1,
-                    ideVent: -1,
                     ideProd: getProductoId(item.producto),
                     cantidadProd: item.cantidad,
                     precioUnitarioProd: precioUnitario,
                     subtotalProd: subtotal,
-                    dctoProd: 0,
-                    dctoPromo: descuentoPromoMonto,
+                    dctoPromoProd: descuentoPromoMonto,
                     ivaProd: (item.producto as any)['ivaProd'] ?? 0,
                     totalProd: totalProd
                 };
             });
 
-            // Calcular descuentos según tipo de cliente
-            // TODO: Obtener información del cliente desde el backend para saber si es socio o tercera edad
-            const dctoSocio = 0; // Se calcula en el backend según el cliente
-            const dctoEdad = 0; // Se calcula en el backend según el cliente
-
             // Generar número de factura temporal
-            const numFactura = `FACT-${Date.now()}`;
+            const numFactura = `MOV-${Date.now()}`;
 
-            // Crear la venta con la estructura completa
+            // Crear cabecera de venta
+            const cabeceraVenta: CabeceraVentaDTO = {
+                ideClie: usuario.ide_clie,
+                numFacturaVent: numFactura,
+                fechaVent: new Date().toISOString(),
+                cantidadVent: cantidadTotal,
+                subTotalVent: carritoActual.subtotal,
+                totalVent: carritoActual.total,
+                dctoSocioVent: 0,  // Se puede calcular en backend si el cliente es socio
+                dctoEdadVent: 0,   // Se puede calcular en backend si el cliente es tercera edad
+                usuaIngre: usuario.username || 'mobile'
+            };
+
+            // Crear la venta
             const ventaData: CrearVentaDTO = {
-                cabeceraVenta: {
-                    ideVent: -1,
-                    ideEmpl: usuario?.ide_empl || 1,
-                    ideClie: usuario?.ide_clie || 0,
-                    numFacturaVent: numFactura,
-                    fechaVent: new Date().toISOString(),
-                    cantidadVent: cantidadTotal,
-                    subTotalVent: subTotal,
-                    totalVent: total,
-                    dctoVent: dctoSocio + dctoEdad,
-                    estadoVent: 'completado',
-                    usuaIngre: usuario?.username || 'web'
-                },
+                cabeceraVenta,
                 detalleVenta: detalles
             };
 
-            // Datos preparados para el backend (omitidos logs en producción)
-
             this.ventaService.crearVenta(ventaData).subscribe({
-                next: (venta) => {
+                next: async (response) => {
                     // Limpiar carrito
                     this.carritoService.limpiarCarrito();
 
                     // Mostrar confirmación
-                    this.mostrarConfirmacion();
+                    await this.mostrarConfirmacion();
 
                     // Redirigir al historial de compras
-                    setTimeout(() => {
-                        this.router.navigate(['/perfil/historial-compras']);
-                    }, 2000);
+                    this.router.navigate(['/usuario/historial-compras']);
                 },
-                error: (error) => {
-                    console.error('Error al crear la venta:', error);
-                    console.error('Mensaje del backend:', error?.error?.message);
-                    console.error('Detalles:', error?.error);
-                    this.mostrarError();
+                error: async (error) => {
+                    console.error('Error al realizar la venta:', error);
+                    await this.mostrarError(error?.error?.message || 'Error al procesar la compra');
                     this.procesando.set(false);
                 }
             });
         } catch (error) {
             console.error('Error en checkout:', error);
-            this.mostrarError();
+            await this.mostrarError('Error al procesar la compra');
             this.procesando.set(false);
         }
     }
 
     async mostrarConfirmacion() {
-        // Implementar con ion-toast o ion-alert
-        // Compra realizada con éxito
+        const toast = await this.toastController.create({
+            message: '¡Compra realizada con éxito!',
+            duration: 3000,
+            position: 'top',
+            color: 'success',
+            icon: 'checkmark-circle-outline'
+        });
+        await toast.present();
     }
 
-    async mostrarError() {
-        // Implementar con ion-toast o ion-alert
-        console.error('Error al procesar la compra');
+    async mostrarError(mensaje: string) {
+        const alert = await this.alertController.create({
+            header: 'Error',
+            message: mensaje,
+            buttons: ['OK']
+        });
+        await alert.present();
     }
 
     volverAlCarrito() {

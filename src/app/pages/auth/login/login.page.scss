@@ -1,0 +1,152 @@
+.login-content {
+    --background: linear-gradient(180deg, var(--ion-color-primary) 0%, var(--ion-color-primary) 40%, var(--ion-background-color) 40%);
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+// Header
+.login-header {
+    text-align: center;
+    padding-top: 20px;
+    margin-bottom: 32px;
+}
+
+.logo-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+    ion-icon {
+        font-size: 40px;
+        color: var(--ion-color-primary);
+    }
+}
+
+.app-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 4px 0;
+}
+
+.app-subtitle {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+}
+
+// Form card
+.login-form-card {
+    background: white;
+    border-radius: 24px;
+    padding: 32px 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+}
+
+.form-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
+    text-align: center;
+    margin: 0 0 24px 0;
+}
+
+// Input groups
+.input-group {
+    display: flex;
+    align-items: center;
+    background: var(--ion-color-light);
+    border-radius: 14px;
+    padding: 4px 16px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+
+    &:focus-within {
+        box-shadow: 0 0 0 2px var(--ion-color-primary);
+    }
+}
+
+.input-icon {
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+
+    ion-icon {
+        font-size: 20px;
+        color: var(--ion-color-medium);
+    }
+}
+
+.custom-input {
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: transparent;
+    --color: var(--ion-text-color);
+    font-size: 0.95rem;
+}
+
+// Login button
+.login-btn {
+    --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+    --border-radius: 14px;
+    height: 52px;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 8px;
+
+    &:disabled {
+        opacity: 0.6;
+    }
+}
+
+// Forgot link
+.forgot-link {
+    text-align: center;
+    margin-top: 16px;
+
+    a {
+        font-size: 0.9rem;
+        color: var(--ion-color-primary);
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Register section
+.register-section {
+    text-align: center;
+    margin-top: auto;
+    padding-bottom: 24px;
+
+    p {
+        font-size: 0.9rem;
+        color: var(--ion-color-medium);
+        margin: 0 0 8px 0;
+    }
+}
+
+.register-btn {
+    --color: var(--ion-color-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+}

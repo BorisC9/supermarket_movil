@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
-    selector: 'app-loading-spinner',
-    template: `
+  selector: 'app-loading-spinner',
+  template: `
     <div class="spinner-container">
       <ion-spinner [name]="name"></ion-spinner>
       @if (mensaje) {
@@ -12,7 +12,7 @@ import { IonicModule } from '@ionic/angular';
       }
     </div>
   `,
-    styles: [`
+  styles: [`
     .spinner-container {
       display: flex;
       flex-direction: column;
@@ -26,10 +26,10 @@ import { IonicModule } from '@ionic/angular';
       }
     }
   `],
-    standalone: true,
-    imports: [CommonModule, IonicModule]
+  standalone: true,
+  imports: [CommonModule, IonicModule]
 })
 export class LoadingSpinnerComponent {
-    @Input() mensaje: string = '';
-    @Input() name: string = 'crescent';
+  @Input() mensaje: string = '';
+  @Input() name: string = 'crescent';
 }

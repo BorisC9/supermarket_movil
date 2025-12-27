@@ -30,4 +30,9 @@ export class ProductoCardComponent {
     onVerDetalle() {
         this.verDetalle.emit(this.producto);
     }
+
+    onImageError(event: Event) {
+        const target = event.target as HTMLImageElement;
+        target.src = 'assets/imgs/placeholder.png';
+    }
 }

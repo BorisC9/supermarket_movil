@@ -39,7 +39,7 @@ export class ProductoDetallePage implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
-        this.productoService.obtenerProductoPorId(id).subscribe({
+      this.productoService.obtenerProductoPorId(id).subscribe({
         next: (p) => {
           this.producto.set(p);
           this.cargando.set(false);
@@ -146,5 +146,12 @@ export class ProductoDetallePage implements OnInit {
   calcularSubtotal(producto: Producto): string {
     const precioConDescuento = parseFloat(this.getPrecioConDescuento(producto));
     return (precioConDescuento * this.cantidad()).toFixed(2);
+  }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (img) {
+      img.src = 'assets/imgs/placeholder.png';
+    }
   }
 }

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
-    selector: 'app-empty-state',
-    template: `
+  selector: 'app-empty-state',
+  template: `
     <div class="empty-state">
       <ion-icon [name]="icono"></ion-icon>
       <h2>{{ titulo }}</h2>
@@ -14,7 +14,7 @@ import { IonicModule } from '@ionic/angular';
       <ng-content></ng-content>
     </div>
   `,
-    styles: [`
+  styles: [`
     .empty-state {
       display: flex;
       flex-direction: column;
@@ -40,11 +40,11 @@ import { IonicModule } from '@ionic/angular';
       }
     }
   `],
-    standalone: true,
-    imports: [CommonModule, IonicModule]
+  standalone: true,
+  imports: [CommonModule, IonicModule]
 })
 export class EmptyStateComponent {
-    @Input() icono: string = 'alert-circle-outline';
-    @Input() titulo: string = 'No hay datos';
-    @Input() mensaje: string = '';
+  @Input() icono: string = 'alert-circle-outline';
+  @Input() titulo: string = 'No hay datos';
+  @Input() mensaje: string = '';
 }

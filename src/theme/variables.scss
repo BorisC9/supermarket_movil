@@ -1,33 +1,34 @@
-// Palette aligned with Firefox Add-ons page: white bg, indigo header, blue accents
+// Paleta Teal - Fresca, natural y balanceada con fondo blanco
 :root {
     --ion-background-color: #ffffff;
     --ion-background-color-rgb: 255, 255, 255;
-    --ion-text-color: #1f2937; /* gray-800 */
+    --ion-text-color: #1f2937;
+    /* gray-800 */
     --ion-text-color-rgb: 31, 41, 55;
 
-    /* Header / brand */
-    --ion-color-primary: #2b2366; /* deep indigo */
-    --ion-color-primary-rgb: 43, 35, 102;
+    /* Primary - Teal oscuro */
+    --ion-color-primary: #0D9488;
+    --ion-color-primary-rgb: 13, 148, 136;
     --ion-color-primary-contrast: #ffffff;
     --ion-color-primary-contrast-rgb: 255, 255, 255;
-    --ion-color-primary-shade: #261f56;
-    --ion-color-primary-tint: #3a2f79;
+    --ion-color-primary-shade: #0B7C73;
+    --ion-color-primary-tint: #25A89C;
 
-    /* Accent links/buttons */
-    --ion-color-secondary: #3b82f6; /* blue */
-    --ion-color-secondary-rgb: 59, 130, 246;
+    /* Secondary - Teal claro */
+    --ion-color-secondary: #14B8A6;
+    --ion-color-secondary-rgb: 20, 184, 166;
     --ion-color-secondary-contrast: #ffffff;
     --ion-color-secondary-contrast-rgb: 255, 255, 255;
-    --ion-color-secondary-shade: #3374db;
-    --ion-color-secondary-tint: #5b96f7;
+    --ion-color-secondary-shade: #11A292;
+    --ion-color-secondary-tint: #2CC4B4;
 
-    /* Subtle indigo */
-    --ion-color-tertiary: #5b5cae;
-    --ion-color-tertiary-rgb: 91, 92, 174;
+    /* Tertiary - Cyan */
+    --ion-color-tertiary: #06B6D4;
+    --ion-color-tertiary-rgb: 6, 182, 212;
     --ion-color-tertiary-contrast: #ffffff;
     --ion-color-tertiary-contrast-rgb: 255, 255, 255;
-    --ion-color-tertiary-shade: #50529a;
-    --ion-color-tertiary-tint: #6f70b6;
+    --ion-color-tertiary-shade: #05A0BB;
+    --ion-color-tertiary-tint: #1FC2DB;
 
     --ion-color-success: #10b981;
     --ion-color-success-rgb: 16, 185, 129;
@@ -50,19 +51,21 @@
     --ion-color-danger-shade: #d43c3c;
     --ion-color-danger-tint: #f06262;
 
-    --ion-color-medium: #6b7280; /* gray-600 */
-    --ion-color-medium-rgb: 107, 114, 128;
+    --ion-color-medium: #64748B;
+    /* slate-500 */
+    --ion-color-medium-rgb: 100, 116, 139;
     --ion-color-medium-contrast: #ffffff;
     --ion-color-medium-contrast-rgb: 255, 255, 255;
-    --ion-color-medium-shade: #5f6674;
-    --ion-color-medium-tint: #7b8291;
+    --ion-color-medium-shade: #58677A;
+    --ion-color-medium-tint: #758397;
 
-    --ion-color-light: #f4f5f8; /* surface */
-    --ion-color-light-rgb: 244, 245, 248;
+    --ion-color-light: #F0FDFA;
+    /* teal-50 - superficie clara con tinte teal */
+    --ion-color-light-rgb: 240, 253, 250;
     --ion-color-light-contrast: #111111;
     --ion-color-light-contrast-rgb: 17, 17, 17;
-    --ion-color-light-shade: #e6e8ec;
-    --ion-color-light-tint: #f7f8fa;
+    --ion-color-light-shade: #D4F0EC;
+    --ion-color-light-tint: #F5FEFB;
 }
 
 ion-content,

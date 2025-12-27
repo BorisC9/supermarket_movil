@@ -1,118 +1,119 @@
-<ion-header>
-    <ion-toolbar color="primary">
-        <ion-title>Productos</ion-title>
-        <ion-buttons slot="end" class="toolbar-icons">
-            <ion-button (click)="irAlCarrito()" fill="clear" style="position: relative;">
-                <ion-icon slot="icon-only" name="cart-outline" size="large" color="light"></ion-icon>
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-title>
+            <div class="header-title">
+                <span class="title-main">Tienda</span>
+                <span class="title-sub">Encuentra lo que necesitas</span>
+            </div>
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="irAlCarrito()" class="icon-btn">
+                <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
                 @if (carritoService.cantidadTotal() > 0) {
-                <ion-badge color="danger" class="cart-badge">
-                    {{ carritoService.cantidadTotal() }}
-                </ion-badge>
+                <span class="cart-badge">{{ carritoService.cantidadTotal() }}</span>
                 }
             </ion-button>
-            <ion-button (click)="irAlPerfil()" fill="clear" style="position: relative;">
-                <ion-icon slot="icon-only" name="person-outline" size="large" color="light" style="color: var(--ion-color-light) !important;"></ion-icon>
+            <ion-button (click)="irAlPerfil()" class="icon-btn">
+                <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
 
-    <!-- Barra de búsqueda -->
-    <ion-toolbar>
-        <ion-searchbar placeholder="Buscar por nombre de producto..." (ionInput)="buscarProductos($event)"
-            [debounce]="500">
+    <!-- Barra de búsqueda moderna -->
+    <ion-toolbar class="search-toolbar">
+        <ion-searchbar placeholder="¿Qué estás buscando?" (ionInput)="buscarProductos($event)" [debounce]="500"
+            mode="ios">
         </ion-searchbar>
     </ion-toolbar>
-
-    <!-- Chips de filtros activos -->
-    @if (categoriaSeleccionada() || terminoBusqueda()) {
-    <ion-toolbar>
-        <div class="chips-container">
-            @if (categoriaSeleccionada()) {
-            <ion-chip (click)="filtrarPorCategoria(null)">
-                <ion-label>{{ obtenerNombreCategoria() }}</ion-label>
-                <ion-icon name="close-circle"></ion-icon>
-            </ion-chip>
-            }
-            @if (terminoBusqueda()) {
-            <ion-chip (click)="limpiarBusqueda()">
-                <ion-label>Búsqueda: "{{ terminoBusqueda() }}"</ion-label>
-                <ion-icon name="close-circle"></ion-icon>
-            </ion-chip>
-            }
-            <ion-chip color="danger" (click)="limpiarTodosFiltros()">
-                <ion-icon name="trash-outline"></ion-icon>
-                <ion-label>Limpiar todo</ion-label>
-            </ion-chip>
-        </div>
-    </ion-toolbar>
-    }
 </ion-header>
 
 <ion-content>
-    <!-- Filtro de categorías -->
-    <ion-segment scrollable [value]="categoriaSeleccionada()?.toString() || 'all'"
-        (ionChange)="filtrarPorCategoria($event.detail.value === 'all' ? null : ($event.detail.value ? +$event.detail.value : null))">
-        <ion-segment-button value="all">
-            <ion-label>Todas</ion-label>
-        </ion-segment-button>
-        @for (categoria of categorias(); track getCategoriaId(categoria)) {
-        <ion-segment-button [value]="getCategoriaId(categoria).toString()">
-            <ion-label>{{ getCategoriaNombre(categoria) }}</ion-label>
-        </ion-segment-button>
+    <!-- Filtros activos -->
+    @if (categoriaSeleccionada() || terminoBusqueda()) {
+    <div class="active-filters">
+        @if (categoriaSeleccionada()) {
+        <div class="category-chip active" (click)="filtrarPorCategoria(null)">
+            <span>{{ obtenerNombreCategoria() }}</span>
+            <ion-icon name="close-circle"></ion-icon>
+        </div>
         }
-    </ion-segment>
+        @if (terminoBusqueda()) {
+        <div class="category-chip active" (click)="limpiarBusqueda()">
+            <span>"{{ terminoBusqueda() }}"</span>
+            <ion-icon name="close-circle"></ion-icon>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- Categorías horizontales -->
+    <div class="categories-section">
+        <h3 class="section-title">Categorías</h3>
+        <div class="categories-scroll">
+            <div class="category-item" [class.active]="!categoriaSeleccionada()" (click)="filtrarPorCategoria(null)">
+                <div class="category-icon-container" [class.active]="!categoriaSeleccionada()">
+                    <ion-icon name="grid-outline"></ion-icon>
+                </div>
+                <span>Todas</span>
+            </div>
+            @for (categoria of categorias(); track getCategoriaId(categoria)) {
+            <div class="category-item" [class.active]="categoriaSeleccionada() === getCategoriaId(categoria)"
+                (click)="filtrarPorCategoria(getCategoriaId(categoria))">
+                <div class="category-icon-container"
+                    [class.active]="categoriaSeleccionada() === getCategoriaId(categoria)">
+                    <ion-icon name="pricetag-outline"></ion-icon>
+                </div>
+                <span>{{ getCategoriaNombre(categoria) }}</span>
+            </div>
+            }
+        </div>
+    </div>
 
     <!-- Lista de productos -->
-    @if (cargando()) {
-    <div class="loading-container">
-        <ion-spinner></ion-spinner>
-    </div>
-    } @else {
-    <ion-grid>
-        <ion-row>
+    <div class="products-section">
+        <div class="section-header">
+            <h3 class="section-title">Productos</h3>
+            <span class="product-count">{{ productos().length }} items</span>
+        </div>
+
+        @if (cargando()) {
+        <div class="loading-container">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </div>
+        } @else {
+        <div class="products-grid">
             @for (producto of productos(); track getProductoId(producto)) {
-            <ion-col size="6" size-md="4" size-lg="3">
-                <ion-card>
+            <div class="product-card animate-in" (click)="verDetalle(producto)">
+                <div class="product-image-container">
                     <img [src]="getProductoImagen(producto) || 'assets/imgs/placeholder.png'"
-                        [alt]="getProductoNombre(producto)" (click)="verDetalle(producto)"
-                        (error)="$event.target.src='assets/imgs/placeholder.png'" />
-
-                    <ion-card-header>
-                        <ion-card-title>{{ getProductoNombre(producto) }}</ion-card-title>
-                        <ion-card-subtitle>
-                            @if (getProductoDctoPromo(producto) > 0) {
-                            <span class="precio-original">${{ getProductoPrecioVenta(producto).toFixed(2) }}</span>
-                            <span class="descuento">-{{ getProductoDctoPromo(producto) }}%</span>
-                            }
-                        </ion-card-subtitle>
-                    </ion-card-header>
-
-                    <ion-card-content>
-                        <div class="precio-container">
-                            <span class="precio">${{ calcularPrecioFinal(producto).toFixed(2) }}</span>
-                        </div>
-
-                        <ion-button expand="block" (click)="agregarAlCarrito(producto)"
-                            [disabled]="getProductoStock(producto) <= 0 || getProductoDisponible(producto) !== 'si'">
-                            @if (getProductoStock(producto) > 0 && getProductoDisponible(producto) === 'si') {
-                            <ion-icon slot="start" name="cart-outline"></ion-icon>
-                            Agregar
-                            } @else {
-                            Sin stock
-                            }
-                        </ion-button>
-                    </ion-card-content>
-                </ion-card>
-            </ion-col>
-            } @empty {
-            <ion-col size="12">
-                <div class="empty-state">
-                    <ion-icon name="search-outline"></ion-icon>
-                    <p>No se encontraron productos</p>
+                        [alt]="getProductoNombre(producto)" (error)="onImageError($event)" />
                 </div>
-            </ion-col>
+                <div class="product-info">
+                    <p class="product-category">{{ getProductoCategoria(producto) || 'Producto' }}</p>
+                    <h4 class="product-name">{{ getProductoNombre(producto) }}</h4>
+                    <div class="product-price-row">
+                        <div class="price-info">
+                            @if (getProductoDctoPromo(producto) > 0) {
+                            <span class="price-original">${{ getProductoPrecioVenta(producto).toFixed(2) }}</span>
+                            }
+                            <span class="product-price">${{ calcularPrecioFinal(producto).toFixed(2) }}</span>
+                        </div>
+                        <ion-button class="add-to-cart-btn" size="small"
+                            (click)="agregarAlCarrito(producto); $event.stopPropagation()"
+                            [disabled]="getProductoStock(producto) <= 0">
+                            <ion-icon slot="icon-only" name="add"></ion-icon>
+                        </ion-button>
+                    </div>
+                </div>
+            </div>
+            } @empty {
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <ion-icon name="search-outline"></ion-icon>
+                <h2>No hay productos</h2>
+                <p>Intenta con otra búsqueda o categoría</p>
+            </div>
             }
-        </ion-row>
-    </ion-grid>
-    }
+        </div>
+        }
+    </div>
 </ion-content>

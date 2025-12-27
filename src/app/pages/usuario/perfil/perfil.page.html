@@ -1,76 +1,89 @@
-<ion-header>
+<ion-header class="ion-no-border">
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/productos"></ion-back-button>
+            <ion-back-button defaultHref="/productos" text="" class="back-btn"></ion-back-button>
         </ion-buttons>
-        <ion-title>Mi Perfil</ion-title>
+        <ion-title>
+            <span class="header-title-text">Mi Perfil</span>
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     @if (cargando()) {
     <div class="loading-container">
-        <ion-spinner></ion-spinner>
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
     </div>
     } @else if (usuario()) {
     <div class="perfil-container">
         <!-- Avatar y nombre -->
-        <div class="perfil-header">
-            <div class="avatar">
-                <ion-icon name="person-circle-outline" size="large"></ion-icon>
+        <div class="profile-header">
+            <div class="avatar-container">
+                <div class="avatar">
+                    <ion-icon name="person"></ion-icon>
+                </div>
+                <div class="avatar-badge">
+                    <ion-icon name="checkmark"></ion-icon>
+                </div>
             </div>
-            <h2>{{ usuario()?.username || 'Usuario' }}</h2>
-            <p class="perfil-tipo">{{ usuario()?.perfil || 'Cliente' }}</p>
+            <h2 class="profile-name">{{ usuario()?.username || 'Usuario' }}</h2>
+            <span class="profile-role">{{ usuario()?.perfil || 'Cliente' }}</span>
         </div>
 
         <!-- Opciones del perfil -->
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Cuenta</ion-label>
-            </ion-list-header>
+        <div class="options-section">
+            <h3 class="section-label">Cuenta</h3>
 
-            <ion-item button (click)="irAEditarPerfil()">
-                <ion-icon slot="start" name="person-outline"></ion-icon>
-                <ion-label>
-                    <h3>Editar Perfil</h3>
-                    <p>Actualizar información personal</p>
-                </ion-label>
-                <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
-            </ion-item>
+            <div class="option-card" (click)="irAEditarPerfil()">
+                <div class="option-icon">
+                    <ion-icon name="person-outline"></ion-icon>
+                </div>
+                <div class="option-content">
+                    <span class="option-title">Editar Perfil</span>
+                    <span class="option-desc">Actualizar información personal</span>
+                </div>
+                <ion-icon name="chevron-forward" class="option-arrow"></ion-icon>
+            </div>
 
-            <ion-item button (click)="irACambiarPassword()">
-                <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
-                <ion-label>
-                    <h3>Cambiar Contraseña</h3>
-                    <p>Actualizar tu contraseña</p>
-                </ion-label>
-                <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
-            </ion-item>
+            <div class="option-card" (click)="irACambiarPassword()">
+                <div class="option-icon">
+                    <ion-icon name="lock-closed-outline"></ion-icon>
+                </div>
+                <div class="option-content">
+                    <span class="option-title">Cambiar Contraseña</span>
+                    <span class="option-desc">Actualizar tu contraseña</span>
+                </div>
+                <ion-icon name="chevron-forward" class="option-arrow"></ion-icon>
+            </div>
+        </div>
 
-            <ion-list-header>
-                <ion-label>Mis Compras</ion-label>
-            </ion-list-header>
+        <div class="options-section">
+            <h3 class="section-label">Mis Compras</h3>
 
-            <ion-item button (click)="irAHistorialCompras()">
-                <ion-icon slot="start" name="receipt-outline"></ion-icon>
-                <ion-label>
-                    <h3>Historial de Compras</h3>
-                    <p>Ver todas tus compras</p>
-                </ion-label>
-                <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
-            </ion-item>
+            <div class="option-card" (click)="irAHistorialCompras()">
+                <div class="option-icon">
+                    <ion-icon name="receipt-outline"></ion-icon>
+                </div>
+                <div class="option-content">
+                    <span class="option-title">Historial de Compras</span>
+                    <span class="option-desc">Ver todas tus compras</span>
+                </div>
+                <ion-icon name="chevron-forward" class="option-arrow"></ion-icon>
+            </div>
+        </div>
 
-            <ion-list-header>
-                <ion-label>Sesión</ion-label>
-            </ion-list-header>
+        <div class="options-section">
+            <h3 class="section-label">Sesión</h3>
 
-            <ion-item button (click)="cerrarSesion()" detail="false">
-                <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
-                <ion-label color="danger">
-                    <h3>Cerrar Sesión</h3>
-                </ion-label>
-            </ion-item>
-        </ion-list>
+            <div class="option-card danger" (click)="cerrarSesion()">
+                <div class="option-icon danger">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                </div>
+                <div class="option-content">
+                    <span class="option-title danger">Cerrar Sesión</span>
+                </div>
+            </div>
+        </div>
     </div>
     }
 </ion-content>
