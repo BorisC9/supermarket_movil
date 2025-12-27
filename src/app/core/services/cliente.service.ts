@@ -9,48 +9,40 @@ import { Cliente } from '../models';
     providedIn: 'root'
 })
 export class ClienteService {
-    private apiUrl = `${environment.apiUrl}/clientes`;
+    private apiUrl = `${environment.apiUrl}/mobile/clientes`;
 
     constructor(private http: HttpClient) { }
 
     /**
-     * Obtener información del cliente por ID
+     * Obtener perfil del cliente autenticado
+     * El backend obtiene el ID del cliente desde el token JWT
      */
-    obtenerCliente(idCliente: number): Observable<Cliente> {
-        return this.http.get<any>(`${this.apiUrl}/buscar/${idCliente}`).pipe(
+    obtenerPerfil(): Observable<Cliente> {
+        return this.http.get<any>(`${this.apiUrl}/perfil`).pipe(
             map(response => response?.data || response)
         );
     }
 
     /**
-     * Actualizar información del cliente
+     * Obtener información del cliente por ID (alias para compatibilidad)
+     */
+    obtenerCliente(idCliente?: number): Observable<Cliente> {
+        return this.obtenerPerfil();
+    }
+
+    /**
+     * Actualizar perfil del cliente autenticado
+     */
+    actualizarPerfil(cliente: Partial<Cliente>): Observable<Cliente> {
+        return this.http.put<any>(`${this.apiUrl}/perfil`, cliente).pipe(
+            map(response => response?.data || response)
+        );
+    }
+
+    /**
+     * Actualizar información del cliente (alias para compatibilidad)
      */
     actualizarCliente(idCliente: number, cliente: Partial<Cliente>): Observable<Cliente> {
-        return this.http.put<any>(`${this.apiUrl}/actualizar/${idCliente}`, cliente).pipe(
-            map(response => response?.data || response)
-        );
-    }
-
-    /**
-     * Buscar cliente por DNI
-     */
-    buscarPorDni(dni: string): Observable<Cliente> {
-        return this.http.get<any>(`${this.apiUrl}/dni/${dni}`).pipe(
-            map(response => response?.data || response)
-        );
-    }
-
-    /**
-     * Buscar cliente por email
-     */
-    buscarPorEmail(email: string): Observable<Cliente | null> {
-        return this.http.get<any>(`${this.apiUrl}/filtrar`, {
-            params: { email_clie: email }
-        }).pipe(
-            map(response => {
-                const clientes = response?.data || response || [];
-                return clientes.length > 0 ? clientes[0] : null;
-            })
-        );
+        return this.actualizarPerfil(cliente);
     }
 }

@@ -2,60 +2,58 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { VentaService, AuthService } from '../../../core/services';
-import { Venta } from '../../../core/models';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VentaService } from '../../../core/services';
+import { Venta, DetalleVenta } from '../../../core/models';
 
 @Component({
-    selector: 'app-historial-compras',
-    templateUrl: './historial-compras.page.html',
-    styleUrls: ['./historial-compras.page.scss'],
+    selector: 'app-detalle-compra',
+    templateUrl: './detalle-compra.page.html',
+    styleUrls: ['./detalle-compra.page.scss'],
     standalone: true,
     imports: [CommonModule, FormsModule, IonicModule]
 })
-export class HistorialComprasPage implements OnInit {
-    compras = signal<Venta[]>([]);
+export class DetalleCompraPage implements OnInit {
+    compra = signal<any>(null);
     cargando = signal<boolean>(true);
     error = signal<string | null>(null);
+    idVenta: number | null = null;
 
     constructor(
         private ventaService: VentaService,
-        private authService: AuthService,
+        private route: ActivatedRoute,
         private router: Router
     ) { }
 
     ngOnInit() {
-        this.cargarHistorial();
-    }
-
-    cargarHistorial() {
-        this.cargando.set(true);
-        this.error.set(null);
-
-        const usuario = this.authService.usuarioActual();
-        const idCliente = usuario?.ide_clie;
-
-        if (!idCliente) {
-            this.error.set('No se pudo identificar el usuario. Por favor, inicia sesión nuevamente.');
-            this.cargando.set(false);
-            return;
-        }
-
-        this.ventaService.obtenerHistorialVentas(idCliente).subscribe({
-            next: (ventas: Venta[]) => {
-                this.compras.set(Array.isArray(ventas) ? ventas : []);
-                this.cargando.set(false);
-            },
-            error: (error: any) => {
-                console.error('Error al cargar historial:', error);
-                this.error.set('Error al cargar el historial de compras');
+        this.route.params.subscribe(params => {
+            this.idVenta = params['id'] ? +params['id'] : null;
+            if (this.idVenta) {
+                this.cargarDetalleCompra();
+            } else {
+                this.error.set('ID de compra no válido');
                 this.cargando.set(false);
             }
         });
     }
 
-    verDetalleCompra(compra: Venta) {
-        this.router.navigate(['/perfil/detalle-compra', compra.ideVent]);
+    cargarDetalleCompra() {
+        if (!this.idVenta) return;
+
+        this.cargando.set(true);
+        this.error.set(null);
+
+        this.ventaService.obtenerDetalleVenta(this.idVenta).subscribe({
+            next: (venta: any) => {
+                this.compra.set(venta);
+                this.cargando.set(false);
+            },
+            error: (error: any) => {
+                console.error('Error al cargar detalle de compra:', error);
+                this.error.set('Error al cargar el detalle de la compra');
+                this.cargando.set(false);
+            }
+        });
     }
 
     formatearFecha(fecha: string): string {
@@ -63,8 +61,10 @@ export class HistorialComprasPage implements OnInit {
         const date = new Date(fecha);
         return date.toLocaleDateString('es-ES', {
             day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         });
     }
 
@@ -86,10 +86,7 @@ export class HistorialComprasPage implements OnInit {
         return estados[estado?.toLowerCase()] || estado;
     }
 
-    doRefresh(event: any) {
-        this.cargarHistorial();
-        setTimeout(() => {
-            event.target.complete();
-        }, 1000);
+    volver() {
+        this.router.navigate(['/perfil/historial-compras']);
     }
 }

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
 import { ProductoService, CategoriaService, CarritoService, AuthService } from '../../core/services';
+import { AlertController } from '@ionic/angular';
 import { Producto, Categoria, calcularPrecioFinal, getProductoId, getProductoNombre, getProductoStock, getProductoDisponible, getProductoPrecioVenta, getProductoImagen, getProductoDctoPromo, getCategoriaId, getCategoriaNombre } from '../../core/models';
 
 @Component({
@@ -25,7 +26,8 @@ export class ProductosPage implements OnInit {
         private categoriaService: CategoriaService,
         public carritoService: CarritoService,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private alertCtrl: AlertController
     ) { }
 
     // Exponer helpers al template
@@ -77,19 +79,31 @@ export class ProductosPage implements OnInit {
 
         this.productoService.obtenerProductos(filtrosAplicar).subscribe({
             next: (productos) => {
-                console.log('Productos cargados:', productos);
                 this.productos.set(Array.isArray(productos) ? productos : []);
                 this.cargando.set(false);
             },
-            error: (error) => {
+            error: async (error) => {
                 console.error('Error al cargar productos:', error);
                 this.productos.set([]); // Asegurar que siempre sea un array
                 this.cargando.set(false);
-                
-                // Si el error es de autenticación, redirigir al login
-                if (error.status === 401 || error.status === 403) {
-                    console.warn('Sesión expirada o sin permisos, redirigiendo al login...');
-                    this.authService.logout();
+
+                // Mostrar mensaje al usuario en vez de cerrar sesión automáticamente
+                if (error?.status === 401 || error?.status === 403) {
+                    const alert = await this.alertCtrl.create({
+                        header: 'Autenticación',
+                        message: 'No tienes permisos para ver estos productos o tu sesión expiró. Por favor inicia sesión nuevamente.',
+                        buttons: [
+                            {
+                                text: 'Ir a login',
+                                handler: () => this.router.navigate(['/auth/login'])
+                            },
+                            {
+                                text: 'Cancelar',
+                                role: 'cancel'
+                            }
+                        ]
+                    });
+                    await alert.present();
                 }
             }
         });

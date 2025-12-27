@@ -9,7 +9,7 @@ import { Categoria } from '../models';
     providedIn: 'root'
 })
 export class CategoriaService {
-    private apiUrl = `${environment.apiUrl}/categorias`;
+    private apiUrl = `${environment.apiUrl}/mobile/categorias`;
 
     constructor(private http: HttpClient) { }
 
@@ -26,7 +26,7 @@ export class CategoriaService {
      * Obtener una categoría por ID
      */
     obtenerCategoriaPorId(id: number): Observable<Categoria> {
-        return this.http.get<any>(`${this.apiUrl}/buscar/${id}`).pipe(
+        return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
             map(response => response?.data || response)
         );
     }

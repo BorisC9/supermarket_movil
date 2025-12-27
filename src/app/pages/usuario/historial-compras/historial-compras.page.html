@@ -60,10 +60,16 @@
                         <span class="label">Subtotal:</span>
                         <span class="value">S/ {{ compra.subTotalVent.toFixed(2) }}</span>
                     </div>
-                    @if (compra.dctoVent && compra.dctoVent > 0) {
+                    @if (compra.dctoSocioVent && compra.dctoSocioVent > 0) {
                     <div class="detalle-row">
-                        <span class="label">Descuento:</span>
-                        <span class="value discount">-S/ {{ compra.dctoVent.toFixed(2) }}</span>
+                        <span class="label">Desc. Socio:</span>
+                        <span class="value discount">-S/ {{ compra.dctoSocioVent.toFixed(2) }}</span>
+                    </div>
+                    }
+                    @if (compra.dctoEdadVent && compra.dctoEdadVent > 0) {
+                    <div class="detalle-row">
+                        <span class="label">Desc. Tercera Edad:</span>
+                        <span class="value discount">-S/ {{ compra.dctoEdadVent.toFixed(2) }}</span>
                     </div>
                     }
                     <div class="detalle-row total">

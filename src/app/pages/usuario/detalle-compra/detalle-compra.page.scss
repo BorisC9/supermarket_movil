@@ -1,0 +1,153 @@
+.loading-container,
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    padding: 2rem;
+    text-align: center;
+
+    ion-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    h2 {
+        margin: 1rem 0;
+        font-size: 1.25rem;
+        color: var(--ion-color-medium);
+    }
+}
+
+.detalle-container {
+    padding: 1rem;
+    padding-bottom: 2rem;
+}
+
+.compra-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    ion-card-title {
+        flex: 1;
+        margin: 0;
+    }
+
+    ion-badge {
+        flex-shrink: 0;
+    }
+}
+
+.section-title {
+    margin: 1.5rem 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+}
+
+.producto-card {
+    margin-bottom: 0.5rem;
+}
+
+.producto-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .producto-nombre {
+        flex: 1;
+
+        h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--ion-color-dark);
+        }
+
+        .cantidad {
+            margin: 0;
+            font-size: 0.875rem;
+            color: var(--ion-color-medium);
+        }
+    }
+
+    .producto-precios {
+        text-align: right;
+
+        p {
+            margin: 0.25rem 0;
+            font-size: 0.875rem;
+        }
+
+        .precio-unitario {
+            color: var(--ion-color-medium);
+        }
+
+        .descuento {
+            color: var(--ion-color-success);
+            font-weight: 500;
+        }
+
+        .subtotal {
+            font-size: 1rem;
+            color: var(--ion-color-dark);
+        }
+    }
+}
+
+.no-productos {
+    text-align: center;
+    color: var(--ion-color-medium);
+    padding: 2rem 0;
+}
+
+.resumen-card {
+    margin-top: 1.5rem;
+}
+
+.resumen-detalle {
+    .detalle-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--ion-color-light);
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: var(--ion-color-medium);
+        }
+
+        .value {
+            font-weight: 500;
+            color: var(--ion-color-dark);
+
+            &.discount {
+                color: var(--ion-color-success);
+            }
+
+            &.total {
+                color: var(--ion-color-primary);
+                font-size: 1.25rem;
+            }
+        }
+    }
+
+    .descuento-row {
+        .label,
+        .value {
+            color: var(--ion-color-success);
+        }
+    }
+
+    .total-row {
+        margin-top: 0.5rem;
+        padding-top: 1rem;
+        border-top: 2px solid var(--ion-color-light);
+    }
+}

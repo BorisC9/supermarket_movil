@@ -9,33 +9,34 @@ import { Venta, CrearVentaDTO } from '../models';
     providedIn: 'root'
 })
 export class VentaService {
-    private apiUrl = `${environment.apiUrl}/ventas`;
+    private apiUrl = `${environment.apiUrl}/mobile/ventas`;
 
     constructor(private http: HttpClient) { }
 
     /**
      * Crear una nueva venta
      */
-    crearVenta(venta: CrearVentaDTO): Observable<Venta> {
-        return this.http.post<any>(`${this.apiUrl}/insertar`, venta).pipe(
+    crearVenta(venta: CrearVentaDTO): Observable<any> {
+        return this.http.post<any>(this.apiUrl, venta).pipe(
             map(response => response?.data || response)
         );
     }
 
     /**
-     * Obtener historial de ventas del cliente
+     * Obtener historial de ventas del cliente autenticado
+     * El backend obtiene el idCliente del token JWT
      */
-    obtenerHistorialVentas(idCliente: number): Observable<Venta[]> {
-        return this.http.get<any>(`${this.apiUrl}/cliente/${idCliente}`).pipe(
-            map(response => response?.data || response || [])
+    obtenerHistorialVentas(idCliente?: number): Observable<Venta[]> {
+        return this.http.get<any>(`${this.apiUrl}/historial`).pipe(
+            map(response => response || [])
         );
     }
 
     /**
      * Obtener detalle de una venta
      */
-    obtenerDetalleVenta(idVenta: number): Observable<Venta> {
-        return this.http.get<any>(`${this.apiUrl}/buscar/${idVenta}`).pipe(
+    obtenerDetalleVenta(idVenta: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/${idVenta}`).pipe(
             map(response => response?.data || response)
         );
     }

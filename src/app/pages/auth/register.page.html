@@ -1,0 +1,247 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/auth/login"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Crear Cuenta</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <div class="register-container">
+        <div class="register-header">
+            <ion-icon name="person-add-outline"></ion-icon>
+            <h1>Crear Cuenta</h1>
+            <p>Únete a nuestra comunidad</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="registrar()">
+            <!-- Información Personal -->
+            <ion-card class="form-section">
+                <ion-card-header>
+                    <ion-card-title>
+                        <ion-icon name="person-outline"></ion-icon>
+                        Información Personal
+                    </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="card-outline" slot="start" class="input-icon"></ion-icon>
+                        <ion-input
+                            formControlName="cedulaClie"
+                            type="text"
+                            label="Cédula/DNI *"
+                            labelPlacement="floating"
+                            placeholder="1234567890"
+                            [class.ion-invalid]="registerForm.get('cedulaClie')?.invalid && registerForm.get('cedulaClie')?.touched"
+                        ></ion-input>
+                    </ion-item>
+                    @if (getErrorMessage('cedulaClie')) {
+                    <div class="error-message">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        {{ getErrorMessage('cedulaClie') }}
+                    </div>
+                    }
+
+                    <div class="row">
+                        <div class="col">
+                            <ion-item lines="none" class="input-item">
+                                <ion-icon name="person-outline" slot="start" class="input-icon"></ion-icon>
+                                <ion-input
+                                    formControlName="primerNombreClie"
+                                    type="text"
+                                    label="Primer Nombre *"
+                                    labelPlacement="floating"
+                                    placeholder="Juan"
+                                    [class.ion-invalid]="registerForm.get('primerNombreClie')?.invalid && registerForm.get('primerNombreClie')?.touched"
+                                ></ion-input>
+                            </ion-item>
+                            @if (getErrorMessage('primerNombreClie')) {
+                            <div class="error-message">
+                                <ion-icon name="alert-circle-outline"></ion-icon>
+                                {{ getErrorMessage('primerNombreClie') }}
+                            </div>
+                            }
+                        </div>
+                        <div class="col">
+                            <ion-item lines="none" class="input-item">
+                                <ion-input
+                                    formControlName="segundoNombreClie"
+                                    type="text"
+                                    label="Segundo Nombre"
+                                    labelPlacement="floating"
+                                    placeholder="Opcional"
+                                ></ion-input>
+                            </ion-item>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <ion-item lines="none" class="input-item">
+                                <ion-icon name="person-outline" slot="start" class="input-icon"></ion-icon>
+                                <ion-input
+                                    formControlName="apellidoPaternoClie"
+                                    type="text"
+                                    label="Apellido Paterno *"
+                                    labelPlacement="floating"
+                                    placeholder="Pérez"
+                                    [class.ion-invalid]="registerForm.get('apellidoPaternoClie')?.invalid && registerForm.get('apellidoPaternoClie')?.touched"
+                                ></ion-input>
+                            </ion-item>
+                            @if (getErrorMessage('apellidoPaternoClie')) {
+                            <div class="error-message">
+                                <ion-icon name="alert-circle-outline"></ion-icon>
+                                {{ getErrorMessage('apellidoPaternoClie') }}
+                            </div>
+                            }
+                        </div>
+                        <div class="col">
+                            <ion-item lines="none" class="input-item">
+                                <ion-input
+                                    formControlName="apellidoMaternoClie"
+                                    type="text"
+                                    label="Apellido Materno"
+                                    labelPlacement="floating"
+                                    placeholder="Opcional"
+                                ></ion-input>
+                            </ion-item>
+                        </div>
+                    </div>
+
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="calendar-outline" slot="start" class="input-icon"></ion-icon>
+                        <ion-input
+                            formControlName="fechaNacimientoClie"
+                            type="date"
+                            label="Fecha de Nacimiento *"
+                            labelPlacement="floating"
+                            [class.ion-invalid]="registerForm.get('fechaNacimientoClie')?.invalid && registerForm.get('fechaNacimientoClie')?.touched"
+                        ></ion-input>
+                    </ion-item>
+                    @if (getErrorMessage('fechaNacimientoClie')) {
+                    <div class="error-message">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        {{ getErrorMessage('fechaNacimientoClie') }}
+                    </div>
+                    }
+                </ion-card-content>
+            </ion-card>
+
+            <!-- Información de Contacto -->
+            <ion-card class="form-section">
+                <ion-card-header>
+                    <ion-card-title>
+                        <ion-icon name="call-outline"></ion-icon>
+                        Información de Contacto
+                    </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="call-outline" slot="start" class="input-icon"></ion-icon>
+                        <ion-input
+                            formControlName="telefonoClie"
+                            type="tel"
+                            label="Teléfono *"
+                            labelPlacement="floating"
+                            placeholder="0999999999"
+                            [class.ion-invalid]="registerForm.get('telefonoClie')?.invalid && registerForm.get('telefonoClie')?.touched"
+                        ></ion-input>
+                    </ion-item>
+                    @if (getErrorMessage('telefonoClie')) {
+                    <div class="error-message">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        {{ getErrorMessage('telefonoClie') }}
+                    </div>
+                    }
+
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+                        <ion-input
+                            formControlName="emailClie"
+                            type="email"
+                            label="Correo Electrónico *"
+                            labelPlacement="floating"
+                            placeholder="ejemplo@correo.com"
+                            [class.ion-invalid]="registerForm.get('emailClie')?.invalid && registerForm.get('emailClie')?.touched"
+                        ></ion-input>
+                    </ion-item>
+                    @if (getErrorMessage('emailClie')) {
+                    <div class="error-message">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        {{ getErrorMessage('emailClie') }}
+                    </div>
+                    }
+                </ion-card-content>
+            </ion-card>
+
+            <!-- Seguridad -->
+            <ion-card class="form-section">
+                <ion-card-header>
+                    <ion-card-title>
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        Seguridad
+                    </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+                        <ion-input
+                            formControlName="password"
+                            type="password"
+                            label="Contraseña *"
+                            labelPlacement="floating"
+                            placeholder="Mínimo 6 caracteres"
+                            [class.ion-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                        ></ion-input>
+                    </ion-item>
+                    @if (getErrorMessage('password')) {
+                    <div class="error-message">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        {{ getErrorMessage('password') }}
+                    </div>
+                    }
+
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+                        <ion-input
+                            formControlName="confirmarPassword"
+                            type="password"
+                            label="Confirmar Contraseña *"
+                            labelPlacement="floating"
+                            placeholder="Repita la contraseña"
+                            [class.ion-invalid]="registerForm.get('confirmarPassword')?.invalid && registerForm.get('confirmarPassword')?.touched"
+                        ></ion-input>
+                    </ion-item>
+                    @if (getErrorMessage('confirmarPassword')) {
+                    <div class="error-message">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        {{ getErrorMessage('confirmarPassword') }}
+                    </div>
+                    }
+                </ion-card-content>
+            </ion-card>
+
+            <div class="button-container">
+                <ion-button 
+                    expand="block" 
+                    type="submit"
+                    size="large"
+                    class="submit-button"
+                    [disabled]="procesando() || registerForm.invalid">
+                    @if (procesando()) {
+                    <ion-spinner name="crescent"></ion-spinner>
+                    <span>Creando cuenta...</span>
+                    } @else {
+                    <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+                    Crear Cuenta
+                    }
+                </ion-button>
+
+                <div class="login-link">
+                    <p>¿Ya tienes cuenta? <a (click)="irALogin()" class="link-text">Inicia sesión aquí</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</ion-content>

@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
@@ -38,11 +38,8 @@ export class LoginPage {
             numIntentos: 1
         };
 
-        console.log('Intentando login con:', { usuario: credentials.usuario, numIntentos: credentials.numIntentos });
-
         this.authService.login(credentials).subscribe({
             next: (response) => {
-                console.log('Login exitoso:', response);
                 this.procesando.set(false);
                 this.router.navigate(['/productos']);
             },

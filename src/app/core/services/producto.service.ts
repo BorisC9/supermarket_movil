@@ -9,7 +9,7 @@ import { Producto } from '../models';
     providedIn: 'root'
 })
 export class ProductoService {
-    private apiUrl = `${environment.apiUrl}/productos`;
+    private apiUrl = `${environment.apiUrl}/mobile/productos`;
 
     constructor(private http: HttpClient) { }
 
@@ -21,7 +21,7 @@ export class ProductoService {
         ideMarc?: number;           // ID de marca
         nombreProd?: string;        // Nombre del producto (búsqueda exacta o parcial)
         codigoBarraProd?: string;   // Código de barras
-        disponibleProd?: string;    // 'S' o 'N'
+        disponibleProd?: string;    // 'si' o 'no'
         estadoProd?: string;        // Estado del producto
     }): Observable<Producto[]> {
         // Si hay filtros, usar el endpoint /filtrar, sino usar el endpoint base
@@ -62,7 +62,7 @@ export class ProductoService {
      * Obtener un producto por ID
      */
     obtenerProductoPorId(id: number): Observable<Producto> {
-        return this.http.get<any>(`${this.apiUrl}/buscar/${id}`).pipe(
+        return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
             map(response => {
                 const data = response?.data ?? response;
                 // Backend may return an array or an object; normalize to object

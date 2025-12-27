@@ -39,9 +39,9 @@ export class EditarPerfilPage implements OnInit {
             segundoNombreClie: [''],
             apellidoPaternoClie: ['', Validators.required],
             apellidoMaternoClie: [''],
-            cedulaClie: ['', [Validators.required, Validators.pattern(/^\d{8,10}$/)]],
+            cedulaClie: ['', [Validators.required, Validators.pattern(/^\d{8,15}$/)]],
             emailClie: ['', [Validators.required, Validators.email]],
-            telefonoClie: ['', [Validators.required, Validators.pattern(/^\d{9,10}$/)]],
+            telefonoClie: ['', [Validators.required, Validators.pattern(/^\d{9,15}$/)]],
             fechaNacimientoClie: ['', Validators.required]
         });
     }
@@ -61,13 +61,12 @@ export class EditarPerfilPage implements OnInit {
 
         this.clienteService.obtenerCliente(idCliente).subscribe({
             next: (cliente: Cliente) => {
-                console.log('Cliente cargado:', cliente);
                 this.cliente.set(cliente);
                 this.perfilForm.patchValue({
                     primerNombreClie: cliente.primerNombreClie,
-                    segundoNombreClie: cliente.segundoNombreClie,
+                    segundoNombreClie: cliente.segundoNombreClie || '',
                     apellidoPaternoClie: cliente.apellidoPaternoClie,
-                    apellidoMaternoClie: cliente.apellidoMaternoClie,
+                    apellidoMaternoClie: cliente.apellidoMaternoClie || '',
                     cedulaClie: cliente.cedulaClie,
                     emailClie: cliente.emailClie,
                     telefonoClie: cliente.telefonoClie,
@@ -89,6 +88,18 @@ export class EditarPerfilPage implements OnInit {
         return date.toISOString().split('T')[0];
     }
 
+    calcularEdad(fechaNacimiento: string): number {
+        if (!fechaNacimiento) return 0;
+        const hoy = new Date();
+        const nacimiento = new Date(fechaNacimiento);
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const mes = hoy.getMonth() - nacimiento.getMonth();
+        if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+            edad--;
+        }
+        return edad;
+    }
+
     async guardarCambios() {
         if (this.perfilForm.invalid) {
             Object.keys(this.perfilForm.controls).forEach(key => {
@@ -103,11 +114,13 @@ export class EditarPerfilPage implements OnInit {
         this.guardando.set(true);
         this.error.set(null);
 
-        const datosActualizados = this.perfilForm.value;
+        const datosActualizados = {
+            ...this.perfilForm.value,
+            edadClie: this.calcularEdad(this.perfilForm.value.fechaNacimientoClie)
+        };
 
         this.clienteService.actualizarCliente(cliente.ideClie, datosActualizados).subscribe({
             next: (clienteActualizado: Cliente) => {
-                console.log('Cliente actualizado:', clienteActualizado);
                 this.guardando.set(false);
                 this.router.navigate(['/perfil'], {
                     state: { mensaje: 'Perfil actualizado correctamente' }

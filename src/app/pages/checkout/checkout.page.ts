@@ -42,7 +42,7 @@ export class CheckoutPage {
 
             // Calcular totales
             const subTotal = carritoActual.subtotal;
-            const descuentoTotal = carritoActual.items.reduce((total, item) => {
+            const descuentoPromoTotal = carritoActual.items.reduce((total, item) => {
                 const precioOriginal = (item.producto as any)['precioVentaProd'] || 0;
                 const descuento = (item.producto as any)['dctoPromoProd'] || 0;
                 const descuentoItem = (precioOriginal * descuento / 100) * item.cantidad;
@@ -52,9 +52,13 @@ export class CheckoutPage {
             const cantidadTotal = carritoActual.items.reduce((sum, item) => sum + item.cantidad, 0);
 
             // Preparar los detalles de la venta
-            const detalles: DetalleVentaDTO[] = carritoActual.items.map(item => {
+            const detalles: any[] = carritoActual.items.map(item => {
                 const precioUnitario = calcularPrecioFinal(item.producto);
+                const dctoPromoPercent = (item.producto as any)['dctoPromoProd'] ?? 0;
                 const subtotal = precioUnitario * item.cantidad;
+                const descuentoPromoMonto = (precioUnitario * dctoPromoPercent / 100) * item.cantidad;
+                const totalProd = subtotal - descuentoPromoMonto;
+
                 return {
                     ideDetaVent: -1,
                     ideVent: -1,
@@ -63,10 +67,16 @@ export class CheckoutPage {
                     precioUnitarioProd: precioUnitario,
                     subtotalProd: subtotal,
                     dctoProd: 0,
-                    dctoPromo: (item.producto as any)['dctoPromoProd'] ?? 0,
-                    ivaProd: (item.producto as any)['ivaProd'] ?? 0
+                    dctoPromo: descuentoPromoMonto,
+                    ivaProd: (item.producto as any)['ivaProd'] ?? 0,
+                    totalProd: totalProd
                 };
             });
+
+            // Calcular descuentos según tipo de cliente
+            // TODO: Obtener información del cliente desde el backend para saber si es socio o tercera edad
+            const dctoSocio = 0; // Se calcula en el backend según el cliente
+            const dctoEdad = 0; // Se calcula en el backend según el cliente
 
             // Generar número de factura temporal
             const numFactura = `FACT-${Date.now()}`;
@@ -75,23 +85,21 @@ export class CheckoutPage {
             const ventaData: CrearVentaDTO = {
                 cabeceraVenta: {
                     ideVent: -1,
-                    ideEmpl: usuario?.ide_empl || 0,
-                    ideClie: usuario?.id || usuario?.ide_cuen || 0,
+                    ideEmpl: usuario?.ide_empl || 1,
+                    ideClie: usuario?.ide_clie || 0,
                     numFacturaVent: numFactura,
                     fechaVent: new Date().toISOString(),
                     cantidadVent: cantidadTotal,
                     subTotalVent: subTotal,
                     totalVent: total,
-                    dctoVent: descuentoTotal,
-                    estadoVent: 'completado'
+                    dctoVent: dctoSocio + dctoEdad,
+                    estadoVent: 'completado',
+                    usuaIngre: usuario?.username || 'web'
                 },
                 detalleVenta: detalles
             };
 
-            console.log('=== Datos a enviar al backend ===');
-            console.log('Usuario:', usuario);
-            console.log('Venta Data:', JSON.stringify(ventaData, null, 2));
-            console.log('================================');
+            // Datos preparados para el backend (omitidos logs en producción)
 
             this.ventaService.crearVenta(ventaData).subscribe({
                 next: (venta) => {
@@ -101,9 +109,9 @@ export class CheckoutPage {
                     // Mostrar confirmación
                     this.mostrarConfirmacion();
 
-                    // Redirigir al historial
+                    // Redirigir al historial de compras
                     setTimeout(() => {
-                        this.router.navigate(['/perfil/historial']);
+                        this.router.navigate(['/perfil/historial-compras']);
                     }, 2000);
                 },
                 error: (error) => {
@@ -123,7 +131,7 @@ export class CheckoutPage {
 
     async mostrarConfirmacion() {
         // Implementar con ion-toast o ion-alert
-        console.log('Compra realizada con éxito');
+        // Compra realizada con éxito
     }
 
     async mostrarError() {

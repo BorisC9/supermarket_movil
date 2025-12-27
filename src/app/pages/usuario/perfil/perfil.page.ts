@@ -42,7 +42,7 @@ export class PerfilPage implements OnInit {
 
     irACambiarPassword() {
         // Por implementar
-        console.log('Cambiar password - Por implementar');
+        // Por implementar
     }
 
     cerrarSesion() {

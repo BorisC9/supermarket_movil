@@ -15,6 +15,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/auth/login.page').then(m => m.LoginPage)
       },
       {
+        path: 'register',
+        loadComponent: () => import('./pages/auth/register.page').then(m => m.RegisterPage)
+      },
+      {
         path: '',
         redirectTo: 'login',
         pathMatch: 'full'
@@ -55,6 +59,10 @@ export const routes: Routes = [
       {
         path: 'historial-compras',
         loadComponent: () => import('./pages/usuario/historial-compras/historial-compras.page').then(m => m.HistorialComprasPage)
+      },
+      {
+        path: 'detalle-compra/:id',
+        loadComponent: () => import('./pages/usuario/detalle-compra/detalle-compra.page').then(m => m.DetalleCompraPage)
       }
     ],
     canActivate: [authGuard]

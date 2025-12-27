@@ -1,0 +1,113 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/perfil/historial-compras"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Detalle de Compra</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    @if (cargando()) {
+    <div class="loading-container">
+        <ion-spinner></ion-spinner>
+        <p>Cargando detalle...</p>
+    </div>
+    } @else if (error()) {
+    <div class="empty-state">
+        <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+        <h2>{{ error() }}</h2>
+        <ion-button (click)="cargarDetalleCompra()" color="primary">
+            Reintentar
+        </ion-button>
+    </div>
+    } @else if (compra()) {
+    <div class="detalle-container">
+        <!-- Información de la compra -->
+        <ion-card>
+            <ion-card-header>
+                <div class="compra-header">
+                    <ion-card-title>Pedido #{{ compra()?.numFacturaVent }}</ion-card-title>
+                    <ion-badge [color]="getEstadoColor(compra()?.estadoVent)">
+                        {{ getEstadoTexto(compra()?.estadoVent) }}
+                    </ion-badge>
+                </div>
+                <ion-card-subtitle>{{ formatearFecha(compra()?.fechaVent) }}</ion-card-subtitle>
+            </ion-card-header>
+        </ion-card>
+
+        <!-- Productos de la compra -->
+        <div class="productos-section">
+            <h3 class="section-title">Productos</h3>
+            @if (compra()?.detalles && compra()?.detalles.length > 0) {
+                @for (detalle of compra()?.detalles; track detalle.ideDetaVent) {
+                <ion-card class="producto-card">
+                    <ion-card-content>
+                        <div class="producto-info">
+                            <div class="producto-nombre">
+                                <h4>{{ detalle.nombreProd || 'Producto' }}</h4>
+                                <p class="cantidad">Cantidad: {{ detalle.cantidadProd }}</p>
+                            </div>
+                            <div class="producto-precios">
+                                <p class="precio-unitario">
+                                    S/ {{ detalle.precioUnitarioProd?.toFixed(2) }} c/u
+                                </p>
+                                @if (detalle.dctoPromoProd && detalle.dctoPromoProd > 0) {
+                                <p class="descuento">
+                                    Desc: -S/ {{ detalle.dctoPromoProd?.toFixed(2) }}
+                                </p>
+                                }
+                                <p class="subtotal">
+                                    <strong>S/ {{ detalle.totalProd?.toFixed(2) }}</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </ion-card-content>
+                </ion-card>
+                }
+            } @else {
+            <ion-card>
+                <ion-card-content>
+                    <p class="no-productos">No hay detalles de productos</p>
+                </ion-card-content>
+            </ion-card>
+            }
+        </div>
+
+        <!-- Resumen de la compra -->
+        <ion-card class="resumen-card">
+            <ion-card-header>
+                <ion-card-title>Resumen</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <div class="resumen-detalle">
+                    <div class="detalle-row">
+                        <span class="label">Cantidad de productos:</span>
+                        <span class="value">{{ compra()?.cantidadVent || 0 }}</span>
+                    </div>
+                    <div class="detalle-row">
+                        <span class="label">Subtotal:</span>
+                        <span class="value">S/ {{ compra()?.subTotalVent?.toFixed(2) }}</span>
+                    </div>
+                    @if (compra()?.dctoSocioVent && compra()?.dctoSocioVent > 0) {
+                    <div class="detalle-row descuento-row">
+                        <span class="label">Descuento Socio:</span>
+                        <span class="value discount">-S/ {{ compra()?.dctoSocioVent?.toFixed(2) }}</span>
+                    </div>
+                    }
+                    @if (compra()?.dctoEdadVent && compra()?.dctoEdadVent > 0) {
+                    <div class="detalle-row descuento-row">
+                        <span class="label">Descuento Tercera Edad:</span>
+                        <span class="value discount">-S/ {{ compra()?.dctoEdadVent?.toFixed(2) }}</span>
+                    </div>
+                    }
+                    <div class="detalle-row total-row">
+                        <span class="label"><strong>Total:</strong></span>
+                        <span class="value total"><strong>S/ {{ compra()?.totalVent?.toFixed(2) }}</strong></span>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+    </div>
+    }
+</ion-content>

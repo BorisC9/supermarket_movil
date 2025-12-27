@@ -39,9 +39,8 @@ export class ProductoDetallePage implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
-      this.productoService.obtenerProductoPorId(id).subscribe({
+        this.productoService.obtenerProductoPorId(id).subscribe({
         next: (p) => {
-          console.log('Producto detalle:', p);
           this.producto.set(p);
           this.cargando.set(false);
         },
@@ -118,8 +117,6 @@ export class ProductoDetallePage implements OnInit {
       this.carritoService.agregarProducto(prod, this.cantidad());
       // Resetear cantidad después de agregar
       this.cantidad.set(1);
-      // Mostrar feedback al usuario (opcional)
-      console.log(`${this.cantidad()} producto(s) agregado(s) al carrito`);
     }
   }
 
