@@ -62,24 +62,24 @@
             <div class="purchase-details">
                 <div class="detail-row">
                     <span>Subtotal</span>
-                    <span>S/ {{ formatearPrecio(compra.subTotalVent) }}</span>
+                    <span>$/ {{ formatearPrecio(compra.subTotalVent) }}</span>
                 </div>
                 @if (compra.dctoSocioVent && compra.dctoSocioVent > 0) {
                 <div class="detail-row discount">
                     <span>Desc. Socio</span>
-                    <span>-S/ {{ formatearPrecio(compra.dctoSocioVent) }}</span>
+                    <span>-$/ {{ formatearPrecio(compra.dctoSocioVent) }}</span>
                 </div>
                 }
                 @if (compra.dctoEdadVent && compra.dctoEdadVent > 0) {
                 <div class="detail-row discount">
                     <span>Desc. Tercera Edad</span>
-                    <span>-S/ {{ formatearPrecio(compra.dctoEdadVent) }}</span>
+                    <span>-$/ {{ formatearPrecio(compra.dctoEdadVent) }}</span>
                 </div>
                 }
                 <div class="detail-divider"></div>
                 <div class="detail-row total">
                     <span>Total</span>
-                    <span>S/ {{ formatearPrecio(compra.totalVent) }}</span>
+                    <span>$/ {{ formatearPrecio(compra.totalVent) }}</span>
                 </div>
             </div>
 
