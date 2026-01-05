@@ -138,8 +138,8 @@ export class CarritoService {
     private guardarCarritoLocal(): void {
         try {
             localStorage.setItem('carrito', JSON.stringify(this.itemsSignal()));
-        } catch (error) {
-            console.error('Error al guardar carrito:', error);
+        } catch {
+            // Error al guardar carrito
         }
     }
 
@@ -153,8 +153,8 @@ export class CarritoService {
                 const items = JSON.parse(carritoGuardado) as ItemCarrito[];
                 this.itemsSignal.set(items);
             }
-        } catch (error) {
-            console.error('Error al cargar carrito:', error);
+        } catch {
+            // Error al cargar carrito
         }
     }
 }

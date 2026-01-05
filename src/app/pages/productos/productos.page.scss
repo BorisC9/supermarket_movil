@@ -110,11 +110,13 @@ ion-header.ion-no-border {
 
 .categories-scroll {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     overflow-x: auto;
-    padding-bottom: 8px;
+    overflow-y: visible;
+    padding: 4px 16px 12px 0;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-
+    
     &::-webkit-scrollbar {
         display: none;
     }
@@ -124,15 +126,16 @@ ion-header.ion-no-border {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    min-width: 70px;
+    gap: 6px;
+    min-width: 68px;
+    flex: 0 0 68px;
     cursor: pointer;
 
     span {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         color: var(--ion-color-medium);
         text-align: center;
-        max-width: 70px;
+        width: 68px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

@@ -99,7 +99,6 @@ export class RegisterPage {
                 }, 1500);
             },
             error: async (error) => {
-                console.error('Error al registrar:', error);
                 this.procesando.set(false);
 
                 let mensaje = 'Error al registrar. Intente nuevamente';

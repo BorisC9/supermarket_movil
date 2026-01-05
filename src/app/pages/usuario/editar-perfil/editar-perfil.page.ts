@@ -74,8 +74,7 @@ export class EditarPerfilPage implements OnInit {
                 });
                 this.cargando.set(false);
             },
-            error: (error: any) => {
-                console.error('Error al cargar cliente:', error);
+            error: () => {
                 this.error.set('Error al cargar los datos del perfil');
                 this.cargando.set(false);
             }
@@ -126,8 +125,7 @@ export class EditarPerfilPage implements OnInit {
                     state: { mensaje: 'Perfil actualizado correctamente' }
                 });
             },
-            error: (error: any) => {
-                console.error('Error al actualizar:', error);
+            error: () => {
                 this.error.set('Error al guardar los cambios');
                 this.guardando.set(false);
             }

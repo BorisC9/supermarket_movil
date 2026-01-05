@@ -1,6 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { VentaService, AuthService } from '../../../core/services';
@@ -11,7 +10,7 @@ import { Venta } from '../../../core/models';
     templateUrl: './historial-compras.page.html',
     styleUrls: ['./historial-compras.page.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, IonicModule]
+    imports: [CommonModule, IonicModule]
 })
 export class HistorialComprasPage implements OnInit {
     compras = signal<Venta[]>([]);
@@ -46,8 +45,7 @@ export class HistorialComprasPage implements OnInit {
                 this.compras.set(Array.isArray(ventas) ? ventas : []);
                 this.cargando.set(false);
             },
-            error: (error: any) => {
-                console.error('Error al cargar historial:', error);
+            error: () => {
                 this.error.set('Error al cargar el historial de compras');
                 this.cargando.set(false);
             }

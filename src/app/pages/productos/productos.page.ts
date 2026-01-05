@@ -1,11 +1,10 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
-import { ProductoService, CategoriaService, CarritoService, AuthService } from '../../core/services';
-import { AlertController } from '@ionic/angular';
-import { Producto, Categoria, calcularPrecioFinal, getProductoId, getProductoNombre, getProductoStock, getProductoDisponible, getProductoPrecioVenta, getProductoImagen, getProductoDctoPromo, getCategoriaId, getCategoriaNombre } from '../../core/models';
+import { ProductoService, CategoriaService, CarritoService } from '../../core/services';
+import { Producto, Categoria, calcularPrecioFinal, getProductoId, getProductoNombre, getProductoStock, getProductoPrecioVenta, getProductoImagen, getProductoDctoPromo, getCategoriaId, getCategoriaNombre } from '../../core/models';
 
 @Component({
     selector: 'app-productos',
@@ -25,18 +24,15 @@ export class ProductosPage implements OnInit {
         private productoService: ProductoService,
         private categoriaService: CategoriaService,
         public carritoService: CarritoService,
-        private authService: AuthService,
         private router: Router,
         private alertCtrl: AlertController
     ) { }
 
     // Exponer helpers al template
     calcularPrecioFinal = calcularPrecioFinal;
-    parseFloat = parseFloat;
     getProductoId = getProductoId;
     getProductoNombre = getProductoNombre;
     getProductoStock = getProductoStock;
-    getProductoDisponible = getProductoDisponible;
     getProductoPrecioVenta = getProductoPrecioVenta;
     getProductoImagen = getProductoImagen;
     getProductoDctoPromo = getProductoDctoPromo;
@@ -54,8 +50,7 @@ export class ProductosPage implements OnInit {
                 const lista = Array.isArray(categorias) ? categorias : [];
                 this.categorias.set(lista);
             },
-            error: (error) => {
-                console.error('Error al cargar categorías:', error);
+            error: () => {
                 this.categorias.set([]);
             }
         });
@@ -83,11 +78,9 @@ export class ProductosPage implements OnInit {
                 this.cargando.set(false);
             },
             error: async (error) => {
-                console.error('Error al cargar productos:', error);
-                this.productos.set([]); // Asegurar que siempre sea un array
+                this.productos.set([]);
                 this.cargando.set(false);
 
-                // Mostrar mensaje al usuario en vez de cerrar sesión automáticamente
                 if (error?.status === 401 || error?.status === 403) {
                     const alert = await this.alertCtrl.create({
                         header: 'Autenticación',
@@ -125,12 +118,6 @@ export class ProductosPage implements OnInit {
         this.cargarProductos();
     }
 
-    limpiarTodosFiltros() {
-        this.categoriaSeleccionada.set(null);
-        this.terminoBusqueda.set('');
-        this.cargarProductos();
-    }
-
     obtenerNombreCategoria(): string {
         const idCategoria = this.categoriaSeleccionada();
         if (!idCategoria) return '';
@@ -163,20 +150,14 @@ export class ProductosPage implements OnInit {
     }
 
     getProductoCategoria(producto: Producto): string {
-        // Si el producto tiene el nombre de la categoría
         if ((producto as any).nom_cate) {
             return (producto as any).nom_cate;
         }
-        // Buscar en las categorías cargadas
         const ideCate = (producto as any).ide_cate || (producto as any).ideCate;
         if (ideCate) {
             const categoria = this.categorias().find(c => this.getCategoriaId(c) === ideCate);
             return categoria ? this.getCategoriaNombre(categoria) : '';
         }
         return '';
-    }
-
-    logout() {
-        this.authService.logout();
     }
 }

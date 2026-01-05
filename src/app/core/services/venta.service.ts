@@ -41,7 +41,6 @@ export class VentaService {
         return this.http.get<any>(`${this.apiUrl}/${idVenta}`).pipe(
             map(response => {
                 const data = response?.data || response;
-                // Fusionar venta con detalles en un solo objeto
                 if (data?.venta && data?.detalles) {
                     return {
                         ...data.venta,

@@ -102,13 +102,11 @@ export class CheckoutPage {
                     this.router.navigate(['/usuario/historial-compras']);
                 },
                 error: async (error) => {
-                    console.error('Error al realizar la venta:', error);
                     await this.mostrarError(error?.error?.message || 'Error al procesar la compra');
                     this.procesando.set(false);
                 }
             });
-        } catch (error) {
-            console.error('Error en checkout:', error);
+        } catch {
             await this.mostrarError('Error al procesar la compra');
             this.procesando.set(false);
         }

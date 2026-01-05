@@ -44,8 +44,7 @@ export class ProductoDetallePage implements OnInit {
           this.producto.set(p);
           this.cargando.set(false);
         },
-        error: (error) => {
-          console.error('Error al cargar producto:', error);
+        error: () => {
           this.producto.set(null);
           this.cargando.set(false);
         }

@@ -45,12 +45,23 @@ export class DetalleCompraPage implements OnInit {
 
         this.ventaService.obtenerDetalleVenta(this.idVenta).subscribe({
             next: (venta: any) => {
-                this.compra.set(venta);
+                if (venta && (venta.ideVent || venta.numFacturaVent)) {
+                    this.compra.set(venta);
+                } else {
+                    this.error.set('No se encontraron datos de la compra');
+                }
                 this.cargando.set(false);
             },
             error: (error: any) => {
-                console.error('Error al cargar detalle de compra:', error);
-                this.error.set('Error al cargar el detalle de la compra');
+                if (error?.status === 404) {
+                    this.error.set('La compra no fue encontrada');
+                } else if (error?.status === 401 || error?.status === 403) {
+                    this.error.set('No tienes permiso para ver esta compra');
+                } else if (error?.error?.message) {
+                    this.error.set(error.error.message);
+                } else {
+                    this.error.set('Error al cargar el detalle de la compra. Intenta nuevamente.');
+                }
                 this.cargando.set(false);
             }
         });

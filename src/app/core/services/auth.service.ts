@@ -91,8 +91,8 @@ export class AuthService {
                 const user = JSON.parse(userData) as Usuario;
                 this.usuarioActualSignal.set(user);
             }
-        } catch (error) {
-            console.error('Error al cargar sesión:', error);
+        } catch {
+            // Error al cargar sesión, usuario deberá iniciar sesión nuevamente
         }
     }
 }

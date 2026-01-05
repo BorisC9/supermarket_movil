@@ -44,7 +44,6 @@ export class LoginPage {
                 this.router.navigate(['/productos']);
             },
             error: async (error) => {
-                console.error('Error al iniciar sesión:', error);
                 this.procesando.set(false);
 
                 let mensaje = 'Error al iniciar sesión';
