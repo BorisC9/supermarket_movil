@@ -4,3 +4,4 @@ export * from './venta.service';
 export * from './carrito.service';
 export * from './auth.service';
 export * from './cliente.service';
+export * from './metodo-pago.service';

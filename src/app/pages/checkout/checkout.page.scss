@@ -198,6 +198,217 @@ ion-header.ion-no-border {
     }
 }
 
+// Saved methods section
+.saved-methods {
+    margin-bottom: 12px;
+}
+
+.subsection-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ion-color-medium);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.payment-option.saved {
+    .saved-icon {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        
+        ion-icon {
+            color: white;
+        }
+    }
+    
+    &.selected .saved-icon {
+        background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+    }
+}
+
+.payment-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    
+    .default-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 6px;
+    }
+}
+
+.add-method-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    color: var(--ion-color-primary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    
+    ion-icon {
+        font-size: 20px;
+    }
+    
+    &:active {
+        opacity: 0.7;
+    }
+}
+
+.methods-divider {
+    display: flex;
+    align-items: center;
+    margin: 16px 0;
+    
+    &::before,
+    &::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--ion-color-light-shade);
+    }
+    
+    span {
+        padding: 0 12px;
+        font-size: 0.8rem;
+        color: var(--ion-color-medium);
+    }
+}
+
+.payment-icon.paypal {
+    background: #003087;
+    
+    ion-icon {
+        color: white;
+    }
+}
+
+// Inline payment forms
+.payment-form {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--ion-color-light);
+    border-radius: 14px;
+    
+    .form-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        
+        ion-icon {
+            font-size: 22px;
+            color: var(--ion-color-primary);
+        }
+        
+        span {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--ion-text-color);
+        }
+        
+        .card-brand {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: var(--ion-color-primary);
+            font-weight: 500;
+            padding: 4px 10px;
+            background: rgba(var(--ion-color-primary-rgb), 0.1);
+            border-radius: 8px;
+        }
+    }
+    
+    &.paypal-form .form-header ion-icon {
+        color: #003087;
+    }
+}
+
+.tipo-tarjeta-segment {
+    margin-bottom: 16px;
+    --background: white;
+    border-radius: 10px;
+    
+    ion-segment-button {
+        --indicator-color: var(--ion-color-primary);
+        --color-checked: white;
+        --border-radius: 8px;
+        font-size: 0.85rem;
+        min-height: 36px;
+    }
+}
+
+.input-group {
+    margin-bottom: 14px;
+    
+    ion-label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--ion-color-medium);
+        margin-bottom: 6px;
+    }
+    
+    &.half {
+        flex: 1;
+    }
+}
+
+.input-row {
+    display: flex;
+    gap: 12px;
+}
+
+.card-input {
+    --background: white;
+    --padding-start: 14px;
+    --padding-end: 14px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    border: 1px solid var(--ion-color-light-shade);
+    
+    &:focus-within {
+        border-color: var(--ion-color-primary);
+    }
+}
+
+.save-method-item {
+    --background: transparent;
+    --padding-start: 0;
+    margin-top: 8px;
+    
+    ion-checkbox {
+        --size: 20px;
+        --border-radius: 6px;
+        margin-right: 10px;
+    }
+    
+    ion-label {
+        font-size: 0.85rem;
+        color: var(--ion-color-medium);
+    }
+}
+
+.security-notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    color: var(--ion-color-medium);
+    font-size: 0.8rem;
+    
+    ion-icon {
+        font-size: 18px;
+        color: var(--ion-color-success);
+    }
+}
+
 // Delivery info
 .delivery-info {
     .info-row {

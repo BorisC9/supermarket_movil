@@ -1,0 +1,205 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/usuario/metodos-pago" text="" class="back-btn"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            <span class="header-title-text">Agregar Método de Pago</span>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="form-container">
+        <!-- Selector de tipo -->
+        <div class="tipo-selector">
+            <div class="tipo-option" 
+                 [class.selected]="tipoSeleccionado() === 'tarjeta'"
+                 (click)="seleccionarTipo('tarjeta')">
+                <ion-icon name="card"></ion-icon>
+                <span>Tarjeta</span>
+            </div>
+            <div class="tipo-option" 
+                 [class.selected]="tipoSeleccionado() === 'paypal'"
+                 (click)="seleccionarTipo('paypal')">
+                <ion-icon name="logo-paypal"></ion-icon>
+                <span>PayPal</span>
+            </div>
+        </div>
+
+        <!-- Formulario Tarjeta -->
+        @if (tipoSeleccionado() === 'tarjeta') {
+            <div class="card-preview">
+                <div class="card-chip"></div>
+                <div class="card-number">{{ numeroTarjeta || '**** **** **** ****' }}</div>
+                <div class="card-bottom">
+                    <div class="card-holder">
+                        <span class="label">TITULAR</span>
+                        <span class="value">{{ nombreTitular || 'NOMBRE APELLIDO' }}</span>
+                    </div>
+                    <div class="card-expiry">
+                        <span class="label">VENCE</span>
+                        <span class="value">{{ fechaExpiracion || 'MM/YY' }}</span>
+                    </div>
+                </div>
+                @if (marcaDetectada()) {
+                    <div class="card-brand">{{ getNombreMarca(marcaDetectada()) }}</div>
+                }
+            </div>
+
+            <div class="form-section">
+                <!-- Tipo de tarjeta -->
+                <ion-segment [(ngModel)]="tipoTarjeta" class="tipo-tarjeta-segment">
+                    <ion-segment-button value="tarjeta_credito">
+                        <ion-label>Crédito</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="tarjeta_debito">
+                        <ion-label>Débito</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+
+                <!-- Número de tarjeta -->
+                <div class="input-group">
+                    <ion-label>Número de tarjeta</ion-label>
+                    <ion-input 
+                        type="tel"
+                        [value]="numeroTarjeta"
+                        (ionInput)="onNumeroTarjetaChange($event)"
+                        placeholder="1234 5678 9012 3456"
+                        maxlength="19"
+                        class="card-input">
+                    </ion-input>
+                    @if (marcaDetectada()) {
+                        <ion-icon [name]="getIconoMarca()" class="marca-icon"></ion-icon>
+                    }
+                </div>
+
+                <!-- Nombre del titular -->
+                <div class="input-group">
+                    <ion-label>Nombre del titular</ion-label>
+                    <ion-input 
+                        type="text"
+                        [(ngModel)]="nombreTitular"
+                        placeholder="Como aparece en la tarjeta"
+                        class="card-input">
+                    </ion-input>
+                </div>
+
+                <!-- Fecha y CVV -->
+                <div class="input-row">
+                    <div class="input-group half">
+                        <ion-label>Fecha de vencimiento</ion-label>
+                        <ion-input 
+                            type="tel"
+                            [value]="fechaExpiracion"
+                            (ionInput)="onFechaExpiracionChange($event)"
+                            placeholder="MM/YY"
+                            maxlength="5"
+                            class="card-input">
+                        </ion-input>
+                    </div>
+                    <div class="input-group half">
+                        <ion-label>CVV</ion-label>
+                        <ion-input 
+                            type="password"
+                            [(ngModel)]="cvv"
+                            placeholder="***"
+                            maxlength="4"
+                            class="card-input">
+                        </ion-input>
+                    </div>
+                </div>
+
+                <!-- Alias -->
+                <div class="input-group">
+                    <ion-label>Alias (opcional)</ion-label>
+                    <ion-input 
+                        type="text"
+                        [(ngModel)]="alias"
+                        placeholder="Ej: Mi tarjeta personal"
+                        class="card-input">
+                    </ion-input>
+                </div>
+
+                <!-- Predeterminado -->
+                <ion-item lines="none" class="predeterminado-item">
+                    <ion-checkbox [(ngModel)]="esPredeterminado" slot="start"></ion-checkbox>
+                    <ion-label>Establecer como predeterminado</ion-label>
+                </ion-item>
+            </div>
+        }
+
+        <!-- Formulario PayPal -->
+        @if (tipoSeleccionado() === 'paypal') {
+            <div class="paypal-preview">
+                <ion-icon name="logo-paypal"></ion-icon>
+                <span>PayPal</span>
+            </div>
+
+            <div class="form-section">
+                <!-- Email PayPal -->
+                <div class="input-group">
+                    <ion-label>Correo electrónico de PayPal</ion-label>
+                    <ion-input 
+                        type="email"
+                        [(ngModel)]="emailPaypal"
+                        placeholder="tu@email.com"
+                        class="card-input">
+                    </ion-input>
+                </div>
+
+                <!-- Nombre -->
+                <div class="input-group">
+                    <ion-label>Nombre completo</ion-label>
+                    <ion-input 
+                        type="text"
+                        [(ngModel)]="nombreTitular"
+                        placeholder="Tu nombre"
+                        class="card-input">
+                    </ion-input>
+                </div>
+
+                <!-- Alias -->
+                <div class="input-group">
+                    <ion-label>Alias (opcional)</ion-label>
+                    <ion-input 
+                        type="text"
+                        [(ngModel)]="aliasPaypal"
+                        placeholder="Ej: Mi PayPal"
+                        class="card-input">
+                    </ion-input>
+                </div>
+
+                <!-- Predeterminado -->
+                <ion-item lines="none" class="predeterminado-item">
+                    <ion-checkbox [(ngModel)]="esPredeterminado" slot="start"></ion-checkbox>
+                    <ion-label>Establecer como predeterminado</ion-label>
+                </ion-item>
+            </div>
+        }
+
+        <!-- Info seguridad -->
+        <div class="security-info">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+            <span>Tus datos están protegidos con encriptación de extremo a extremo</span>
+        </div>
+    </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+    <div class="footer-container">
+        <ion-button 
+            expand="block" 
+            class="save-btn" 
+            (click)="guardarMetodoPago()"
+            [disabled]="procesando() || (tipoSeleccionado() === 'tarjeta' ? !validarFormularioTarjeta() : !validarFormularioPaypal())">
+            @if (procesando()) {
+                <ion-spinner name="crescent"></ion-spinner>
+                <span style="margin-left: 8px;">Guardando...</span>
+            } @else {
+                <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+                Guardar Método de Pago
+            }
+        </ion-button>
+    </div>
+</ion-footer>

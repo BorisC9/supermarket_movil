@@ -10,6 +10,8 @@ export interface Venta {
     dctoEdadVent: number;
     totalVent: number;
     estadoVent: string;
+    tipoPagoVent?: string;
+    ideMetoPago?: number;
     usuaIngre?: string;
     fechaIngre?: string;
     usuaActua?: string;
@@ -45,6 +47,8 @@ export interface CabeceraVentaDTO {
     dctoSocioVent?: number;  // Descuento por ser socio
     dctoEdadVent?: number;   // Descuento por tercera edad
     usuaIngre?: string;
+    tipoPagoVent?: string;   // 'efectivo', 'tarjeta_credito', 'tarjeta_debito', 'paypal'
+    ideMetoPago?: number;    // ID del método de pago guardado
 }
 
 export interface DetalleVentaDTO {

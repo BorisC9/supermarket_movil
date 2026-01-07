@@ -1,0 +1,86 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/usuario/perfil" text="" class="back-btn"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            <span class="header-title-text">Métodos de Pago</span>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="metodos-container">
+        <!-- Loading -->
+        @if (metodoPagoService.cargando()) {
+            <div class="loading-container">
+                <ion-spinner name="crescent"></ion-spinner>
+                <p>Cargando métodos de pago...</p>
+            </div>
+        }
+
+        <!-- Lista de métodos -->
+        @if (!metodoPagoService.cargando()) {
+            @if (metodoPagoService.metodosPago().length > 0) {
+                <div class="metodos-list">
+                    @for (metodo of metodoPagoService.metodosPago(); track metodo.ideMetoPago) {
+                        <div class="metodo-card" [class.predeterminado]="metodo.esPredeterminado === 'si'">
+                            <div class="metodo-icon" [style.background-color]="getColorMarca(metodo.marcaTarjeta)">
+                                <ion-icon [name]="getIconoTipoPago(metodo)"></ion-icon>
+                            </div>
+                            
+                            <div class="metodo-info">
+                                <div class="metodo-header">
+                                    <span class="metodo-alias">
+                                        {{ metodo.alias || getNombreTipoPago(metodo.tipoPago) }}
+                                    </span>
+                                    @if (metodo.esPredeterminado === 'si') {
+                                        <ion-badge color="success">Predeterminado</ion-badge>
+                                    }
+                                </div>
+                                
+                                @if (metodo.tipoPago === 'paypal') {
+                                    <span class="metodo-detalle">{{ metodo.emailPaypal }}</span>
+                                } @else {
+                                    <span class="metodo-detalle">{{ metodo.numeroTarjetaMasked }}</span>
+                                    @if (metodo.fechaExpiracion) {
+                                        <span class="metodo-expiracion">Vence: {{ metodo.fechaExpiracion }}</span>
+                                    }
+                                }
+                                
+                                <span class="metodo-titular">{{ metodo.nombreTitular }}</span>
+                            </div>
+
+                            <div class="metodo-actions">
+                                @if (metodo.esPredeterminado !== 'si') {
+                                    <ion-button fill="clear" size="small" (click)="establecerPredeterminado(metodo)">
+                                        <ion-icon slot="icon-only" name="star-outline"></ion-icon>
+                                    </ion-button>
+                                }
+                                <ion-button fill="clear" size="small" color="danger" (click)="confirmarEliminar(metodo)">
+                                    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                                </ion-button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            } @else {
+                <!-- Empty state -->
+                <div class="empty-state">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <h3>No tienes métodos de pago</h3>
+                    <p>Agrega una tarjeta o cuenta de PayPal para realizar compras más rápido</p>
+                </div>
+            }
+        }
+    </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+    <div class="footer-container">
+        <ion-button expand="block" class="add-btn" (click)="agregarMetodoPago()">
+            <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+            Agregar Método de Pago
+        </ion-button>
+    </div>
+</ion-footer>

@@ -67,6 +67,14 @@ export const routes: Routes = [
       {
         path: 'cambiar-password',
         loadComponent: () => import('./pages/usuario/cambiar-password/cambiar-password.page').then(m => m.CambiarPasswordPage)
+      },
+      {
+        path: 'metodos-pago',
+        loadComponent: () => import('./pages/usuario/metodos-pago/metodos-pago.page').then(m => m.MetodosPagoPage)
+      },
+      {
+        path: 'agregar-tarjeta',
+        loadComponent: () => import('./pages/usuario/agregar-tarjeta/agregar-tarjeta.page').then(m => m.AgregarTarjetaPage)
       }
     ],
     canActivate: [authGuard]
@@ -94,6 +102,14 @@ export const routes: Routes = [
       {
         path: 'cambiar-password',
         loadComponent: () => import('./pages/usuario/cambiar-password/cambiar-password.page').then(m => m.CambiarPasswordPage)
+      },
+      {
+        path: 'metodos-pago',
+        loadComponent: () => import('./pages/usuario/metodos-pago/metodos-pago.page').then(m => m.MetodosPagoPage)
+      },
+      {
+        path: 'agregar-tarjeta',
+        loadComponent: () => import('./pages/usuario/agregar-tarjeta/agregar-tarjeta.page').then(m => m.AgregarTarjetaPage)
       }
     ],
     canActivate: [authGuard]

@@ -23,6 +23,7 @@ import {
   lockClosedOutline,
   keyOutline,
   shieldCheckmark,
+  shieldCheckmarkOutline,
 
   // Actions
   searchOutline,
@@ -33,6 +34,7 @@ import {
   addCircleOutline,
   removeCircleOutline,
   saveOutline,
+  addOutline,
 
   // Status & Feedback
   checkmarkCircleOutline,
@@ -58,6 +60,8 @@ import {
   briefcaseOutline,
   cashOutline,
   cardOutline,
+  card,
+  logoPaypal,
   swapHorizontalOutline,
   barcodeOutline,
   cubeOutline,
@@ -91,6 +95,7 @@ addIcons({
   'lock-closed-outline': lockClosedOutline,
   'key-outline': keyOutline,
   'shield-checkmark': shieldCheckmark,
+  'shield-checkmark-outline': shieldCheckmarkOutline,
 
   // Actions
   'search-outline': searchOutline,
@@ -101,6 +106,7 @@ addIcons({
   'add-circle-outline': addCircleOutline,
   'remove-circle-outline': removeCircleOutline,
   'save-outline': saveOutline,
+  'add-outline': addOutline,
 
   // Status & Feedback
   'checkmark-circle-outline': checkmarkCircleOutline,
@@ -126,6 +132,8 @@ addIcons({
   'briefcase-outline': briefcaseOutline,
   'cash-outline': cashOutline,
   'card-outline': cardOutline,
+  'card': card,
+  'logo-paypal': logoPaypal,
   'swap-horizontal-outline': swapHorizontalOutline,
   'barcode-outline': barcodeOutline,
   'cube-outline': cubeOutline,

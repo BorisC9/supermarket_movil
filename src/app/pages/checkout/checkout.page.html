@@ -23,8 +23,7 @@
                 <div class="order-item">
                     <div class="item-info">
                         <span class="item-name">{{ getProductoNombre(item.producto) }}</span>
-                        <span class="item-qty">{{ item.cantidad }} x ${{ calcularPrecioFinal(item.producto).toFixed(2)
-                            }}</span>
+                        <span class="item-qty">{{ item.cantidad }} x ${{ calcularPrecioFinal(item.producto).toFixed(2) }}</span>
                     </div>
                     <span class="item-price">${{ item.total.toFixed(2) }}</span>
                 </div>
@@ -60,9 +59,49 @@
                 <h3>Método de Pago</h3>
             </div>
 
+            <!-- Métodos de pago guardados -->
+            @if (metodoPagoService.metodosPago().length > 0) {
+                <div class="saved-methods">
+                    <span class="subsection-label">Métodos guardados</span>
+                    @for (metodo of metodoPagoService.metodosPago(); track metodo.ideMetoPago) {
+                        <div class="payment-option saved" 
+                             [class.selected]="metodoGuardadoSeleccionado()?.ideMetoPago === metodo.ideMetoPago"
+                             (click)="seleccionarMetodoGuardado(metodo)">
+                            <div class="payment-icon saved-icon">
+                                <ion-icon [name]="getIconoTipoPago(metodo)"></ion-icon>
+                            </div>
+                            <div class="payment-info">
+                                <span class="payment-name">{{ metodo.alias || getNombreTipoPago(metodo.tipoPago) }}</span>
+                                <span class="payment-desc">
+                                    @if (metodo.tipoPago === 'paypal') {
+                                        {{ metodo.emailPaypal }}
+                                    } @else {
+                                        {{ metodo.numeroTarjetaMasked }}
+                                    }
+                                </span>
+                            </div>
+                            <div class="payment-check">
+                                @if (metodoGuardadoSeleccionado()?.ideMetoPago === metodo.ideMetoPago) {
+                                    <ion-icon name="checkmark-circle"></ion-icon>
+                                }
+                                @if (metodo.esPredeterminado === 'si') {
+                                    <ion-badge color="success" class="default-badge">★</ion-badge>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="methods-divider">
+                    <span>o pagar de otra forma</span>
+                </div>
+            }
+
+            <!-- Opciones de pago directo -->
             <div class="payment-options">
-                <div class="payment-option" [class.selected]="metodoPago() === 'efectivo'"
-                    (click)="seleccionarMetodoPago('efectivo')">
+                <!-- Efectivo -->
+                <div class="payment-option" 
+                     [class.selected]="metodoPago() === 'efectivo' && !metodoGuardadoSeleccionado()"
+                     (click)="seleccionarMetodoPago('efectivo')">
                     <div class="payment-icon">
                         <ion-icon name="cash-outline"></ion-icon>
                     </div>
@@ -71,44 +110,164 @@
                         <span class="payment-desc">Pago al recibir</span>
                     </div>
                     <div class="payment-check">
-                        @if (metodoPago() === 'efectivo') {
-                        <ion-icon name="checkmark-circle"></ion-icon>
+                        @if (metodoPago() === 'efectivo' && !metodoGuardadoSeleccionado()) {
+                            <ion-icon name="checkmark-circle"></ion-icon>
                         }
                     </div>
                 </div>
 
-                <div class="payment-option" [class.selected]="metodoPago() === 'tarjeta'"
-                    (click)="seleccionarMetodoPago('tarjeta')">
+                <!-- Tarjeta -->
+                <div class="payment-option" 
+                     [class.selected]="metodoPago() === 'tarjeta' && !metodoGuardadoSeleccionado()"
+                     (click)="seleccionarMetodoPago('tarjeta')">
                     <div class="payment-icon">
                         <ion-icon name="card-outline"></ion-icon>
                     </div>
                     <div class="payment-info">
-                        <span class="payment-name">Tarjeta</span>
-                        <span class="payment-desc">Débito o crédito</span>
+                        <span class="payment-name">Tarjeta de crédito/débito</span>
+                        <span class="payment-desc">Ingresa los datos de tu tarjeta</span>
                     </div>
                     <div class="payment-check">
-                        @if (metodoPago() === 'tarjeta') {
-                        <ion-icon name="checkmark-circle"></ion-icon>
+                        @if (metodoPago() === 'tarjeta' && !metodoGuardadoSeleccionado()) {
+                            <ion-icon name="checkmark-circle"></ion-icon>
                         }
                     </div>
                 </div>
 
-                <div class="payment-option" [class.selected]="metodoPago() === 'transferencia'"
-                    (click)="seleccionarMetodoPago('transferencia')">
-                    <div class="payment-icon">
-                        <ion-icon name="swap-horizontal-outline"></ion-icon>
+                <!-- PayPal -->
+                <div class="payment-option" 
+                     [class.selected]="metodoPago() === 'paypal' && !metodoGuardadoSeleccionado()"
+                     (click)="seleccionarMetodoPago('paypal')">
+                    <div class="payment-icon paypal">
+                        <ion-icon name="logo-paypal"></ion-icon>
                     </div>
                     <div class="payment-info">
-                        <span class="payment-name">Transferencia</span>
-                        <span class="payment-desc">Transferencia bancaria</span>
+                        <span class="payment-name">PayPal</span>
+                        <span class="payment-desc">Paga con tu cuenta PayPal</span>
                     </div>
                     <div class="payment-check">
-                        @if (metodoPago() === 'transferencia') {
-                        <ion-icon name="checkmark-circle"></ion-icon>
+                        @if (metodoPago() === 'paypal' && !metodoGuardadoSeleccionado()) {
+                            <ion-icon name="checkmark-circle"></ion-icon>
                         }
                     </div>
                 </div>
             </div>
+
+            <!-- Formulario Tarjeta (inline) -->
+            @if (metodoPago() === 'tarjeta' && !metodoGuardadoSeleccionado()) {
+                <div class="payment-form">
+                    <div class="form-header">
+                        <ion-icon name="card"></ion-icon>
+                        <span>Datos de la tarjeta</span>
+                        @if (marcaDetectada()) {
+                            <span class="card-brand">{{ getNombreMarca(marcaDetectada()) }}</span>
+                        }
+                    </div>
+
+                    <!-- Tipo de tarjeta -->
+                    <ion-segment [(ngModel)]="tipoTarjeta" class="tipo-tarjeta-segment">
+                        <ion-segment-button value="tarjeta_credito">
+                            <ion-label>Crédito</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="tarjeta_debito">
+                            <ion-label>Débito</ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+
+                    <!-- Número de tarjeta -->
+                    <div class="input-group">
+                        <ion-label>Número de tarjeta</ion-label>
+                        <ion-input 
+                            type="tel"
+                            [value]="numeroTarjeta"
+                            (ionInput)="onNumeroTarjetaChange($event)"
+                            placeholder="1234 5678 9012 3456"
+                            maxlength="19"
+                            class="card-input">
+                        </ion-input>
+                    </div>
+
+                    <!-- Nombre del titular -->
+                    <div class="input-group">
+                        <ion-label>Nombre del titular</ion-label>
+                        <ion-input 
+                            type="text"
+                            [(ngModel)]="nombreTitular"
+                            placeholder="Como aparece en la tarjeta"
+                            class="card-input">
+                        </ion-input>
+                    </div>
+
+                    <!-- Fecha y CVV -->
+                    <div class="input-row">
+                        <div class="input-group half">
+                            <ion-label>Vencimiento</ion-label>
+                            <ion-input 
+                                type="tel"
+                                [value]="fechaExpiracion"
+                                (ionInput)="onFechaExpiracionChange($event)"
+                                placeholder="MM/YY"
+                                maxlength="5"
+                                class="card-input">
+                            </ion-input>
+                        </div>
+                        <div class="input-group half">
+                            <ion-label>CVV</ion-label>
+                            <ion-input 
+                                type="password"
+                                [(ngModel)]="cvv"
+                                placeholder="***"
+                                maxlength="4"
+                                class="card-input">
+                            </ion-input>
+                        </div>
+                    </div>
+
+                    <!-- Opción para guardar -->
+                    <ion-item lines="none" class="save-method-item">
+                        <ion-checkbox [(ngModel)]="guardarMetodo" slot="start"></ion-checkbox>
+                        <ion-label>Guardar esta tarjeta para futuras compras</ion-label>
+                    </ion-item>
+                </div>
+            }
+
+            <!-- Formulario PayPal (inline) -->
+            @if (metodoPago() === 'paypal' && !metodoGuardadoSeleccionado()) {
+                <div class="payment-form paypal-form">
+                    <div class="form-header">
+                        <ion-icon name="logo-paypal"></ion-icon>
+                        <span>Datos de PayPal</span>
+                    </div>
+
+                    <!-- Email PayPal -->
+                    <div class="input-group">
+                        <ion-label>Correo electrónico de PayPal</ion-label>
+                        <ion-input 
+                            type="email"
+                            [(ngModel)]="emailPaypal"
+                            placeholder="tu@email.com"
+                            class="card-input">
+                        </ion-input>
+                    </div>
+
+                    <!-- Nombre -->
+                    <div class="input-group">
+                        <ion-label>Nombre completo</ion-label>
+                        <ion-input 
+                            type="text"
+                            [(ngModel)]="nombrePaypal"
+                            placeholder="Tu nombre"
+                            class="card-input">
+                        </ion-input>
+                    </div>
+
+                    <!-- Opción para guardar -->
+                    <ion-item lines="none" class="save-method-item">
+                        <ion-checkbox [(ngModel)]="guardarMetodo" slot="start"></ion-checkbox>
+                        <ion-label>Guardar PayPal para futuras compras</ion-label>
+                    </ion-item>
+                </div>
+            }
         </div>
 
         <!-- Información del cliente -->
@@ -122,8 +281,7 @@
             <div class="delivery-info">
                 <div class="info-row">
                     <ion-icon name="person-outline"></ion-icon>
-                    <span>{{ authService.usuarioActual()?.username || authService.usuarioActual()?.usuario_cuen
-                        }}</span>
+                    <span>{{ authService.usuarioActual()?.username || authService.usuarioActual()?.usuario_cuen }}</span>
                 </div>
                 <div class="info-row">
                     <ion-icon name="briefcase-outline"></ion-icon>
@@ -132,6 +290,12 @@
             </div>
         </div>
         }
+
+        <!-- Info seguridad -->
+        <div class="security-notice">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+            <span>Tus datos están protegidos</span>
+        </div>
     </div>
 </ion-content>
 
@@ -142,7 +306,7 @@
             <span class="total-amount">${{ carritoService.carrito().total.toFixed(2) }}</span>
         </div>
         <ion-button class="confirm-btn" (click)="confirmarCompra()"
-            [disabled]="procesando() || carritoService.carrito().items.length === 0">
+            [disabled]="procesando() || carritoService.carrito().items.length === 0 || !puedeConfirmarCompra()">
             @if (procesando()) {
             <ion-spinner name="crescent"></ion-spinner>
             <span style="margin-left: 8px;">Procesando...</span>
