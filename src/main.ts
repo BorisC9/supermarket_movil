@@ -35,6 +35,8 @@ import {
   removeCircleOutline,
   saveOutline,
   addOutline,
+  starOutline,
+  star,
 
   // Status & Feedback
   checkmarkCircleOutline,
@@ -67,7 +69,36 @@ import {
   cubeOutline,
   locationOutline,
   eyeOutline,
-  eyeOffOutline
+  eyeOffOutline,
+
+  // Categorías
+  fastFoodOutline,
+  nutritionOutline,
+  wineOutline,
+  iceCreamOutline,
+  leafOutline,
+  fishOutline,
+  pizzaOutline,
+  cafeOutline,
+  medkitOutline,
+  sparklesOutline,
+  homeOutline,
+  pawOutline,
+  shirtOutline,
+  fitnessOutline,
+  constructOutline,
+  desktopOutline,
+  colorPaletteOutline,
+  flowerOutline,
+  bodyOutline,
+  giftOutline,
+  bookOutline,
+  carOutline,
+  flameOutline,
+  snowOutline,
+  waterOutline,
+  gameControllerOutline,
+  filmOutline
 } from 'ionicons/icons';
 
 import { routes } from './app/app.routes';
@@ -107,6 +138,8 @@ addIcons({
   'remove-circle-outline': removeCircleOutline,
   'save-outline': saveOutline,
   'add-outline': addOutline,
+  'star-outline': starOutline,
+  'star': star,
 
   // Status & Feedback
   'checkmark-circle-outline': checkmarkCircleOutline,
@@ -139,7 +172,36 @@ addIcons({
   'cube-outline': cubeOutline,
   'location-outline': locationOutline,
   'eye-outline': eyeOutline,
-  'eye-off-outline': eyeOffOutline
+  'eye-off-outline': eyeOffOutline,
+
+  // Categorías
+  'fast-food-outline': fastFoodOutline,
+  'nutrition-outline': nutritionOutline,
+  'wine-outline': wineOutline,
+  'ice-cream-outline': iceCreamOutline,
+  'leaf-outline': leafOutline,
+  'fish-outline': fishOutline,
+  'pizza-outline': pizzaOutline,
+  'cafe-outline': cafeOutline,
+  'medkit-outline': medkitOutline,
+  'sparkles-outline': sparklesOutline,
+  'home-outline': homeOutline,
+  'paw-outline': pawOutline,
+  'shirt-outline': shirtOutline,
+  'fitness-outline': fitnessOutline,
+  'construct-outline': constructOutline,
+  'desktop-outline': desktopOutline,
+  'color-palette-outline': colorPaletteOutline,
+  'flower-outline': flowerOutline,
+  'body-outline': bodyOutline,
+  'gift-outline': giftOutline,
+  'book-outline': bookOutline,
+  'car-outline': carOutline,
+  'flame-outline': flameOutline,
+  'snow-outline': snowOutline,
+  'water-outline': waterOutline,
+  'game-controller-outline': gameControllerOutline,
+  'film-outline': filmOutline
 });
 
 bootstrapApplication(AppComponent, {

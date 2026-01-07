@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
 import { ProductoService, CategoriaService, CarritoService } from '../../core/services';
-import { Producto, Categoria, calcularPrecioFinal, getProductoId, getProductoNombre, getProductoStock, getProductoPrecioVenta, getProductoImagen, getProductoDctoPromo, getCategoriaId, getCategoriaNombre } from '../../core/models';
+import { Producto, Categoria, calcularPrecioFinal, getProductoId, getProductoNombre, getProductoStock, getProductoPrecioVenta, getProductoImagen, getProductoDctoPromo, getCategoriaId, getCategoriaNombre, getIconoCategoria } from '../../core/models';
 
 @Component({
     selector: 'app-productos',
@@ -38,6 +38,7 @@ export class ProductosPage implements OnInit {
     getProductoDctoPromo = getProductoDctoPromo;
     getCategoriaId = getCategoriaId;
     getCategoriaNombre = getCategoriaNombre;
+    getIconoCategoria = getIconoCategoria;
 
     ngOnInit() {
         this.cargarCategorias();
